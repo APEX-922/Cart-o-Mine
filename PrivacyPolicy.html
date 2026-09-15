@@ -251,16 +251,33 @@
             font-size: 14px;
         }
 
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
         footer a {
             color: var(--text-gold);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        footer a:hover {
             text-decoration: underline;
+            color: #ffffff;
         }
 
         .footer-compliance {
             font-size: 11px;
             color: rgba(255, 255, 255, 0.4);
-            margin-top: 10px;
+            margin-top: 12px;
             line-height: 1.4;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         @media (max-width: 768px) {
@@ -361,8 +378,14 @@
         </main>
 
         <footer>
+            <div class="footer-links">
+                <a href="https://apex-922.github.io/CopyCart/index#features">Features</a>
+                <a href="https://apex-922.github.io/CopyCart/index#how-it-works">How It Works</a>
+                <a href="https://apex-922.github.io/CopyCart/Support">Link Generator</a>
+                <a href="https://apex-922.github.io/CopyCart/PrivacyPolicy">Privacy Policy</a>
+                <a href="mailto:support@copycart.app">Contact Support</a>
+            </div>
             <p>Copyright &copy; 2026 APEX. All Rights Reserved.</p>
-            <p style="margin-top: 8px;"><a href="https://apex-922.github.io/CopyCart/PrivacyPolicy">Privacy Policy</a></p>
             <p class="footer-compliance">CopyCart is an independent third-party tool not affiliated with Amazon.com, Inc. or eBay Inc. As an Amazon Associate I earn from qualifying purchases. As an eBay Partner I may earn from qualifying purchases.</p>
         </footer>
     </div>
