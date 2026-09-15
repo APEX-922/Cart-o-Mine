@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shared Collection | CopyCart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #080A0F;
+      --card-bg: rgba(18, 22, 31, 0.85);
+      --card-border: rgba(223, 186, 103, 0.25);
+      --card-border-glow: rgba(223, 186, 103, 0.9);
+      --text-main: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.6);
+      --text-gold: #F3D99B;
+      --gold-gradient: linear-gradient(135deg, #F9E4B7 0%, #DFBA67 50%, #9E7D3B 100%);
+      --gold-solid: #DFBA67;
+      --radius-lg: 12px;
+      --radius-md: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(223, 186, 103, 0.15) 0%, transparent 65%),
+        radial-gradient(circle at 80% 90%, rgba(158, 125, 59, 0.1) 0%, transparent 50%);
+      color: var(--text-main);
+      width: 100%;
+      min-height: 100vh;
+      padding: 24px 12px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    
+    .app-container {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(223, 186, 103, 0.15);
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .app-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .logo-container {
+      width: 100%;
+      max-width: 220px;
+      margin-bottom: 8px;
+    }
+
+    .svg-logo-banner {
+      width: 100%;
+      height: auto;
+      overflow: visible;
+      filter: drop-shadow(0 0 15px rgba(223, 186, 103, 0.4));
+      display: block;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34D399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background: #34D399;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #34D399;
+    }
+
+    .item-list {
+      max-height: 280px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .item-card {
+      background: rgba(10, 13, 20, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+
+    .item-card:hover {
+      border-color: var(--card-border-glow);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 10px rgba(223, 186, 103, 0.2);
+    }
+
+    .item-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-gold);
+    }
+
+    .item-badge {
+      font-size: 10px;
+      background: rgba(223, 186, 103, 0.15);
+      border: 1px solid var(--card-border);
+      color: var(--text-gold);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: var(--gold-gradient);
+      color: #080A0F;
+      font-weight: 800;
+      font-family: 'Montserrat', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid var(--card-border-glow);
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 13px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 20px rgba(223, 186, 103, 0.25);
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: var(--gold-gradient);
+      border-color: #ffffff;
+      box-shadow: 0 0 30px rgba(223, 186, 103, 0.7), inset 0 0 12px rgba(255, 255, 255, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .disclosure {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 16px;
+      font-weight: 400;
+      line-height: 1.4;
+      border-top: 1px solid var(--card-border);
+      padding-top: 12px;
+    }
+
+    #cookie-frame {
+      display: none;
+      width: 0;
+      height: 0;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="app-header">
+      <div class="logo-container">
+        <svg class="svg-logo-banner" viewBox="0 0 650 120" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#F9E4B7" />
+              <stop offset="50%" stop-color="#DFBA67" />
+              <stop offset="100%" stop-color="#9E7D3B" />
+            </linearGradient>
+            <filter id="goldGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="5" result="blur" />
+              <feComponentTransfer in="blur" result="glow1">
+                <feFuncA type="linear" slope="0.8"/>
+              </feComponentTransfer>
+              <feMerge>
+                <feMergeNode in="glow1" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <path id="sparkle" d="M10,0 L12.5,7.5 L20,10 L12.5,12.5 L10,20 L7.5,12.5 L0,10 L7.5,7.5 Z" fill="#F9E4B7" />
+          </defs>
+
+          <use href="#sparkle" x="60" y="25">
+            <animate attributeName="opacity" values="0.2;1;0.2" dur="2s" repeatCount="indefinite" />
+            <animate attributeName="transform" type="scale" values="0.5;0.9;0.5" dur="2s" repeatCount="indefinite" />
+          </use>
+          <use href="#sparkle" x="560" y="35">
+            <animate attributeName="opacity" values="1;0.2;1" dur="1.5s" repeatCount="indefinite" />
+            <animate attributeName="transform" type="scale" values="0.8;0.4;0.8" dur="1.5s" repeatCount="indefinite" />
+          </use>
+          <use href="#sparkle" x="110" y="85">
+            <animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.5s" repeatCount="indefinite" />
+            <animate attributeName="transform" type="scale" values="0.4;0.7;0.4" dur="2.5s" repeatCount="indefinite" />
+          </use>
+
+          <text 
+            x="50%" 
+            y="55%" 
+            dominant-baseline="middle" 
+            text-anchor="middle"
+            style='
+              font-family: "Montserrat", "Arial Black", sans-serif;
+              font-weight: 900;
+              font-size: 76px;
+              letter-spacing: -3px;
+              fill: url("#goldGradient");
+              filter: url("#goldGlow");
+            '>
+            CopyCart
+          </text>
+        </svg>
+      </div>
+      <p class="subtitle" id="item-count-text">Loading collection...</p>
+      <div class="status-badge">
+        <span class="status-dot"></span> Active EPN Tracking
+      </div>
+    </div>
+
+    <div class="item-list" id="item-list">
+      <!-- Item cards injected here -->
+    </div>
+
+    <button id="open-all-btn">Open Collection on eBay</button>
+
+    <div class="disclosure">
+      CopyCart generates affiliate links. As an eBay Partner Network affiliate, earnings may be generated from qualifying purchases.
+    </div>
+  </div>
+
+  <iframe id="cookie-frame"></iframe>
+
+  <script>
+    const EPN_CAMPAIGN_ID = "5339209459";
+    const EPN_ROTATION_ID = "711-53200-19255-0";
+
+    function buildEpnUrl(itemId) {
+      const baseUrl = `https://www.ebay.com/itm/${itemId}`;
+      const params = new URLSearchParams({
+        mkevt: "1",
+        mkcid: "1",
+        mkrid: EPN_ROTATION_ID,
+        siteid: "0",
+        campid: EPN_CAMPAIGN_ID,
+        toolid: "10001"
+      });
+      return `${baseUrl}?${params.toString()}`;
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const rawItems = urlParams.get("items");
+    const itemIds = rawItems ? rawItems.split(",").map(id => id.trim()).filter(Boolean) : [];
+
+    const itemCountText = document.getElementById("item-count-text");
+    const itemListContainer = document.getElementById("item-list");
+    const openAllBtn = document.getElementById("open-all-btn");
+    const cookieFrame = document.getElementById("cookie-frame");
+
+    if (itemIds.length === 0) {
+      itemCountText.textContent = "No valid items found in this share link.";
+      openAllBtn.style.display = "none";
+    } else {
+      itemCountText.textContent = `${itemIds.length} shared item${itemIds.length > 1 ? "s" : ""} ready to view`;
+
+      // Drops tracking cookie automatically on page load via hidden iframe
+      const primaryTrackedUrl = buildEpnUrl(itemIds[0]);
+      cookieFrame.src = primaryTrackedUrl;
+
+      // Render items
+      itemIds.forEach((id, index) => {
+        const card = document.createElement("div");
+        card.className = "item-card";
+        card.innerHTML = `
+          <span class="item-title">eBay Item #${id}</span>
+          ${index === 0 ? '<span class="item-badge">Primary</span>' : ''}
+        `;
+        itemListContainer.appendChild(card);
+      });
+
+      // Opens tracked items in new tabs when user clicks button
+      openAllBtn.addEventListener("click", () => {
+        itemIds.forEach((id) => {
+          window.open(buildEpnUrl(id), "_blank");
+        });
+      });
+    }
+  </script>
+</body>
+</html>
