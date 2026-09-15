@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CopyCart - Shared Cart Items</title>
-  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/APEX-922/CopyCart/main/icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -169,7 +168,6 @@
       text-decoration: line-through;
     }
 
-    /* Checkbox Hidden by Default */
     .item-chk {
       width: 18px;
       height: 18px;
@@ -179,9 +177,34 @@
       display: none;
     }
 
-    /* Shown only when item is triggered/completed */
     .item-card.completed .item-chk {
       display: inline-block;
+    }
+
+    /* Product Thumbnail Styling */
+    .item-thumb-container {
+      width: 64px;
+      height: 64px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .item-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .item-thumb-placeholder {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-align: center;
     }
 
     .item-details {
@@ -213,7 +236,6 @@
       margin-top: 4px;
     }
 
-    /* eBay Blue Buttons */
     .btn-item-cart {
       padding: 10px 18px;
       background: var(--ebay-blue-gradient);
@@ -240,7 +262,6 @@
       transform: translateY(-1px);
     }
 
-    /* Completed button state */
     .btn-item-cart.btn-completed {
       background: rgba(0, 100, 210, 0.15) !important;
       color: var(--text-gold) !important;
@@ -249,7 +270,6 @@
       font-weight: 600 !important;
     }
 
-    /* Reset All & Promo Section */
     .reset-container {
       margin-top: 10px;
       margin-bottom: 10px;
@@ -288,7 +308,6 @@
       max-width: 700px;
     }
 
-    /* Footer & Disclosures */
     .footer-section {
       margin-top: 16px;
       border-top: 1px solid var(--card-border);
@@ -301,7 +320,7 @@
 
     .copyright {
       font-size: 11px;
-      color: var(--text-muted);
+      color: #B8B8B8;
       text-align: center;
     }
 
@@ -323,14 +342,10 @@
     .tool-notice,
     .disclosure {
       font-size: 10px;
-      color: var(--text-muted);
+      color: #B8B8B8;
       text-align: center;
       font-weight: 400;
       line-height: 1.4;
-    }
-
-    iframe {
-      display: none;
     }
   </style>
 </head>
@@ -391,7 +406,7 @@
       </a>
       <p class="subtitle" id="item-count-text">Loading shared collection...</p>
       <div class="instruction-banner" id="instruction-banner" style="display:none;">
-        Due to eBay not having an easy way to add all items natively on their site, click <strong>Add to Cart</strong> next to each item to add it directly on eBay. After you add each item, click back to return to this page and repeat the process for each item.
+        Click <strong>Add to Cart</strong> next to each item to open it directly on eBay. Once added, return to this tab to complete the rest of your items.
       </div>
     </div>
 
@@ -399,18 +414,16 @@
 
     <div class="reset-container" id="reset-container" style="display:none;">
       <button class="btn-reset-all" id="reset-all-btn">↻ Reset Progress for All Items</button>
-      <div class="try-copycart-text">If you want to try CopyCart yourself, Just click the CopyCart logo at the top and u will be directed to the homepage.</div>
+      <div class="try-copycart-text">Want to share your own carts? Click the CopyCart logo at the top to explore the extension!</div>
     </div>
 
     <div class="footer-section">
       <div class="copyright">Copyright © 2026 APEX. All Rights Reserved.</div>
       <a href="https://apex-922.github.io/CopyCart/PrivacyPolicy" class="privacy-link">Privacy Policy</a>
       <div class="tool-notice">CopyCart is an independent third-party tool.</div>
-      <div class="disclosure">CopyCart generates affiliate links. As an eBay Partner, purchases made through shared links earn commissions.</div>
+      <div class="disclosure">As an eBay Partner, I may earn from qualifying purchases.</div>
     </div>
   </div>
-
-  <iframe id="cookie-frame"></iframe>
 
   <script>
     const EPN_CAMPAIGN_ID = "5339209459";
@@ -446,9 +459,7 @@
     const itemListContainer = document.getElementById("item-list");
     const resetContainer = document.getElementById("reset-container");
     const resetAllBtn = document.getElementById("reset-all-btn");
-    const cookieFrame = document.getElementById("cookie-frame");
 
-    // Load completed items state from session storage
     function getCompletedItems() {
       try {
         return JSON.parse(sessionStorage.getItem("copycart_completed_items") || "[]");
@@ -481,24 +492,53 @@
 
       parsedItems.forEach((item) => {
         const itemUrl = buildEpnUrl(item.id);
-        const card = document.createElement("div");
         const isAlreadyCompleted = completedIds.includes(item.id);
 
+        const card = document.createElement("div");
         card.className = `item-card ${isAlreadyCompleted ? 'completed' : ''}`;
 
-        card.innerHTML = `
-          <input type="checkbox" class="item-chk" ${isAlreadyCompleted ? 'checked' : ''}>
-          <div class="item-details">
-            <a href="${itemUrl}" target="_blank" rel="noopener" class="item-title-link">${item.title}</a>
-            <div class="item-id-tag">Item ID: ${item.id}</div>
-          </div>
-          <a href="${itemUrl}" target="_blank" rel="noopener" class="btn-item-cart ${isAlreadyCompleted ? 'btn-completed' : ''}">
-            ${isAlreadyCompleted ? 'Complete' : 'Add to Cart'}
-          </a>
-        `;
+        const chk = document.createElement("input");
+        chk.type = "checkbox";
+        chk.className = "item-chk";
+        chk.checked = isAlreadyCompleted;
 
-        const chk = card.querySelector(".item-chk");
-        const btn = card.querySelector(".btn-item-cart");
+        // Image container setup leveraging standard eBay open Graph / thumb fallback server patterns
+        const thumbContainer = document.createElement("div");
+        thumbContainer.className = "item-thumb-container";
+
+        const img = document.createElement("img");
+        img.className = "item-thumb";
+        // Attempt loading standard item preview via eBay thumbnail structure or fallback cleanly if unavailable
+        img.src = `https://i.ebayimg.com/images/s-l225/${item.id}.jpg`;
+        img.alt = item.title;
+        img.onerror = () => {
+          thumbContainer.innerHTML = `<div class="item-thumb-placeholder">No Image</div>`;
+        };
+        thumbContainer.appendChild(img);
+
+        const details = document.createElement("div");
+        details.className = "item-details";
+
+        const titleLink = document.createElement("a");
+        titleLink.href = itemUrl;
+        titleLink.target = "_blank";
+        titleLink.rel = "noopener noreferrer";
+        titleLink.className = "item-title-link";
+        titleLink.textContent = item.title;
+
+        const idTag = document.createElement("div");
+        idTag.className = "item-id-tag";
+        idTag.textContent = `Item ID: ${item.id}`;
+
+        details.appendChild(titleLink);
+        details.appendChild(idTag);
+
+        const btn = document.createElement("a");
+        btn.href = itemUrl;
+        btn.target = "_blank";
+        btn.rel = "noopener noreferrer";
+        btn.className = `btn-item-cart ${isAlreadyCompleted ? 'btn-completed' : ''}`;
+        btn.textContent = isAlreadyCompleted ? 'Complete' : 'Add to Cart';
 
         function markRowState(completed) {
           if (completed) {
@@ -525,6 +565,11 @@
           markRowState(checked);
         });
 
+        card.appendChild(chk);
+        card.appendChild(thumbContainer);
+        card.appendChild(details);
+        card.appendChild(btn);
+
         itemListContainer.appendChild(card);
       });
     }
@@ -535,9 +580,6 @@
       itemCountText.textContent = `${parsedItems.length} shared item${parsedItems.length > 1 ? 's' : ''} ready to view`;
       instructionBanner.style.display = "block";
       resetContainer.style.display = "flex";
-
-      // Cookie trigger for affiliate attribution
-      cookieFrame.src = buildEpnUrl(parsedItems[0].id);
 
       renderList();
 
