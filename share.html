@@ -263,10 +263,6 @@
       border-top: 1px solid var(--card-border);
       padding-top: 12px;
     }
-
-    iframe {
-      display: none;
-    }
   </style>
 </head>
 <body>
@@ -339,8 +335,6 @@
     <div class="disclosure">CopyCart generates affiliate links. As an eBay Partner, purchases made through shared links earn commissions.</div>
   </div>
 
-  <iframe id="cookie-frame"></iframe>
-
   <script>
     const EPN_CAMPAIGN_ID = "5339209459";
     const EPN_ROTATION_ID = "711-53200-19255-0";
@@ -375,7 +369,6 @@
     const itemListContainer = document.getElementById("item-list");
     const resetContainer = document.getElementById("reset-container");
     const resetAllBtn = document.getElementById("reset-all-btn");
-    const cookieFrame = document.getElementById("cookie-frame");
 
     // Load completed items state from session storage
     function getCompletedItems() {
@@ -464,9 +457,6 @@
       itemCountText.textContent = `${parsedItems.length} shared item${parsedItems.length > 1 ? 's' : ''} ready to view`;
       instructionBanner.style.display = "block";
       resetContainer.style.display = "flex";
-
-      // Cookie trigger for affiliate attribution
-      cookieFrame.src = buildEpnUrl(parsedItems[0].id);
 
       renderList();
 
