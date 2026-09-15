@@ -80,6 +80,8 @@
       display: inline-block;
       width: 100%;
       max-width: 280px;
+      text-decoration: none;
+      cursor: pointer;
     }
 
     .svg-logo-banner {
@@ -239,12 +241,14 @@
       font-weight: 600 !important;
     }
 
-    /* Reset All Button */
+    /* Reset All & Promo Section */
     .reset-container {
       margin-top: 10px;
       margin-bottom: 10px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
     }
 
     .btn-reset-all {
@@ -265,15 +269,57 @@
       background: rgba(0, 100, 210, 0.15);
     }
 
+    .try-copycart-text {
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.4;
+      max-width: 700px;
+    }
+
+    /* Footer & Disclosures */
+    .footer-section {
+      margin-top: 16px;
+      border-top: 1px solid var(--card-border);
+      padding-top: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tool-notice,
     .disclosure {
       font-size: 10px;
       color: var(--text-muted);
       text-align: center;
-      margin-top: 16px;
       font-weight: 400;
       line-height: 1.4;
-      border-top: 1px solid var(--card-border);
-      padding-top: 12px;
+    }
+
+    .copyright {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    .privacy-link {
+      font-size: 11px;
+      font-weight: 600;
+      text-decoration: none;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: opacity 0.2s ease;
+    }
+
+    .privacy-link:hover {
+      opacity: 0.8;
+      text-decoration: underline;
     }
 
     iframe {
@@ -285,7 +331,7 @@
 
   <div class="app-container">
     <div class="app-header">
-      <div class="logo-link">
+      <a href="https://apex-922.github.io/CopyCart" class="logo-link">
         <svg class="svg-logo-banner" viewBox="0 0 650 120" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -335,7 +381,7 @@
             CopyCart
           </text>
         </svg>
-      </div>
+      </a>
       <p class="subtitle" id="item-count-text">Loading shared collection...</p>
       <div class="instruction-banner" id="instruction-banner" style="display:none;">
         Due to eBay not having an easy way to add all items natively on their site, click <strong>Add to Cart</strong> next to each item to add it directly on eBay. After you add each item, click back to return to this page and repeat the process for each item.
@@ -346,9 +392,15 @@
 
     <div class="reset-container" id="reset-container" style="display:none;">
       <button class="btn-reset-all" id="reset-all-btn">↻ Reset Progress for All Items</button>
+      <div class="try-copycart-text">If you want to try CopyCart yourself, Just click the CopyCart logo at the top and u will be directed to the homepage.</div>
     </div>
 
-    <div class="disclosure">CopyCart generates affiliate links. As an eBay Partner, purchases made through shared links earn commissions.</div>
+    <div class="footer-section">
+      <div class="tool-notice">CopyCart is an independent third-party tool.</div>
+      <div class="disclosure">CopyCart generates affiliate links. As an eBay Partner, purchases made through shared links earn commissions.</div>
+      <div class="copyright">Copyright © 2026 APEX. All Rights Reserved.</div>
+      <a href="https://apex-922.github.io/CopyCart/PrivacyPolicy" class="privacy-link">Privacy Policy</a>
+    </div>
   </div>
 
   <iframe id="cookie-frame"></iframe>
