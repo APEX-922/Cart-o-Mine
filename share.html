@@ -168,12 +168,19 @@
       text-decoration: line-through;
     }
 
+    /* Checkbox Hidden by Default */
     .item-chk {
       width: 18px;
       height: 18px;
       accent-color: var(--ebay-blue-solid);
       cursor: pointer;
       flex-shrink: 0;
+      display: none;
+    }
+
+    /* Shown only when item is triggered/completed */
+    .item-card.completed .item-chk {
+      display: inline-block;
     }
 
     .item-details {
