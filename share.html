@@ -123,7 +123,6 @@
       padding-right: 6px;
     }
 
-    /* Scrollbar Styling */
     .item-list::-webkit-scrollbar {
       width: 6px;
     }
@@ -156,7 +155,6 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 10px rgba(223, 186, 103, 0.2);
     }
 
-    /* Completed state styling */
     .item-card.completed {
       background: rgba(5, 7, 10, 0.85);
       border-color: rgba(223, 186, 103, 0.12);
@@ -183,8 +181,8 @@
 
     /* Product Thumbnail Styling */
     .item-thumb-container {
-      width: 64px;
-      height: 64px;
+      width: 60px;
+      height: 60px;
       border-radius: 6px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--card-border);
@@ -202,7 +200,7 @@
     }
 
     .item-thumb-placeholder {
-      font-size: 10px;
+      font-size: 9px;
       color: var(--text-muted);
       text-align: center;
     }
@@ -445,13 +443,25 @@
     const urlParams = new URLSearchParams(window.location.search);
     const rawItemsParam = urlParams.get("items") || "";
     
-    // Parse Payload Format (ID:Title,ID:Title)
+    // Parse Payload Format supporting image URLs: ID:Title:ImageURL or fallback to ID:Title
     const parsedItems = rawItemsParam.split(",").map(entry => {
-      const [id, ...titleParts] = entry.split(":");
-      const cleanId = (id || "").trim();
-      const rawTitle = titleParts.join(":");
-      const cleanTitle = rawTitle ? decodeURIComponent(rawTitle) : `eBay Item #${cleanId}`;
-      return { id: cleanId, title: cleanTitle };
+      const parts = entry.split(":");
+      const cleanId = (parts[0] || "").trim();
+      
+      let cleanTitle = `eBay Item #${cleanId}`;
+      let cleanImgUrl = "";
+
+      if (parts.length >= 3) {
+        // Format: ID:TitlePart1:TitlePart2...:ImageURL (Assuming last segment or middle decode)
+        // Better schema structure: ID:EncodedTitle:EncodedImageUrl
+        // Let's handle standard split where parts[0]=ID, parts[1]=Title, parts[2]=ImageURL
+        cleanTitle = parts[1] ? decodeURIComponent(parts[1]) : cleanTitle;
+        cleanImgUrl = parts[2] ? decodeURIComponent(parts.slice(2).join(":")) : "";
+      } else if (parts.length === 2) {
+        cleanTitle = parts[1] ? decodeURIComponent(parts[1]) : cleanTitle;
+      }
+
+      return { id: cleanId, title: cleanTitle, imgUrl: cleanImgUrl };
     }).filter(item => item.id.length > 0);
 
     const itemCountText = document.getElementById("item-count-text");
@@ -502,19 +512,22 @@
         chk.className = "item-chk";
         chk.checked = isAlreadyCompleted;
 
-        // Image container setup leveraging standard eBay open Graph / thumb fallback server patterns
+        // Thumbnail element container
         const thumbContainer = document.createElement("div");
         thumbContainer.className = "item-thumb-container";
 
-        const img = document.createElement("img");
-        img.className = "item-thumb";
-        // Attempt loading standard item preview via eBay thumbnail structure or fallback cleanly if unavailable
-        img.src = `https://i.ebayimg.com/images/s-l225/${item.id}.jpg`;
-        img.alt = item.title;
-        img.onerror = () => {
+        if (item.imgUrl) {
+          const img = document.createElement("img");
+          img.className = "item-thumb";
+          img.src = item.imgUrl;
+          img.alt = item.title;
+          img.onerror = () => {
+            thumbContainer.innerHTML = `<div class="item-thumb-placeholder">No Image</div>`;
+          };
+          thumbContainer.appendChild(img);
+        } else {
           thumbContainer.innerHTML = `<div class="item-thumb-placeholder">No Image</div>`;
-        };
-        thumbContainer.appendChild(img);
+        }
 
         const details = document.createElement("div");
         details.className = "item-details";
