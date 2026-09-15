@@ -640,13 +640,13 @@
 </head>
 <body>
 
-    <div class="parallax-bg" id="bgLogoCenter"></div>
+    <div class="parallax-bg" id="bgLogoCenter" aria-hidden="true"></div>
 
     <div class="container">
         <header>
             <a href="https://apex-922.github.io/CopyCart/index" class="logo" id="headerLogo">
                 <div style="position:relative; width: 100%; display: flex; justify-content: center; align-items: center;">
-                    <svg class="svg-logo-banner" viewBox="0 0 650 100" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="svg-logo-banner" viewBox="0 0 650 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <defs>
                             <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                 <stop offset="0%" stop-color="#F9E4B7" />
@@ -673,7 +673,7 @@
                             CopyCart
                         </text>
                     </svg>
-                    <div class="glitter-container" id="logoGlitter"></div>
+                    <div class="glitter-container" id="logoGlitter" aria-hidden="true"></div>
                 </div>
             </a>
             <nav class="nav-links">
@@ -688,9 +688,9 @@
             <!-- 1. Generate & Copy Link Card at the top -->
             <div class="generator-card" id="link-generator">
                 <h2>
-                    <span class="pulsing-arrow">↓</span>
+                    <span class="pulsing-arrow" aria-hidden="true">↓</span>
                     Generate & Copy Shareable Link
-                    <span class="pulsing-arrow">↓</span>
+                    <span class="pulsing-arrow" aria-hidden="true">↓</span>
                 </h2>
 
                 <form id="tagForm" onsubmit="generateAndCopyLink(event)">
@@ -706,13 +706,13 @@
 
                     <div class="action-buttons-wrapper">
                         <button type="submit" class="btn-generate" id="generateBtn">
-                            <span class="pulsing-arrow-right">→</span>
+                            <span class="pulsing-arrow-right" aria-hidden="true">→</span>
                             <span id="generateBtnText">Generate & Copy Link</span>
-                            <span class="pulsing-arrow-left">←</span>
+                            <span class="pulsing-arrow-left" aria-hidden="true">←</span>
                         </button>
 
                         <button type="button" class="btn-share" id="shareBtn" onclick="shareGeneratedLink(event)" title="Share Link" aria-label="Share Link">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                             <span id="shareBtnText">Share Link</span>
                         </button>
                     </div>
@@ -721,7 +721,7 @@
 
             <!-- 2. Text banner positioned in between -->
             <div class="intro-banner">
-                This page is solely here to help support CopyCart. It is entirely optional and unnecessary because this is all handled within the extension itself. But feel free to copy any Amazon/Ebay link u wish to make easily sharable multi-item suggestions to your friends, family, or ccolleagues. currently only working for Amazon at the moment.
+                This page is solely here to help support CopyCart. It is entirely optional and unnecessary because this is all handled within the extension itself. Feel free to copy any Amazon or eBay links you wish to make easily shareable multi-item suggestions for your friends, family, or colleagues. Currently only working for Amazon.
             </div>
 
             <!-- 3. Chrome & Firefox Badges at the bottom -->
@@ -731,8 +731,8 @@
                     <span class="badge-label">Get This For Chrome</span>
                     <a href="https://chromewebstore.google.com/detail/copycart/lhnmfphjaelpcpgfjjokadcfjljgmekb?authuser=1&hl=en" class="badge" id="badgeLogoChrome" style="text-decoration: none;" target="_blank" rel="noopener noreferrer">
                         <div style="position:relative; display:inline-block;">
-                            <img src="https://raw.githubusercontent.com/APEX-922/CopyCart/main/icon.png" alt="Icon" class="badge-icon">
-                            <div class="glitter-container" id="badgeGlitterChrome"></div>
+                            <img src="https://raw.githubusercontent.com/APEX-922/CopyCart/main/icon.png" alt="CopyCart Icon" class="badge-icon">
+                            <div class="glitter-container" id="badgeGlitterChrome" aria-hidden="true"></div>
                         </div>
                         <span>CopyCart v1.6</span>
                     </a>
@@ -743,8 +743,8 @@
                     <span class="badge-label">Get This For Firefox</span>
                     <a href="https://addons.mozilla.org/en-US/firefox/addon/copycart/" class="badge" id="badgeLogoFirefox" style="text-decoration: none;" target="_blank" rel="noopener noreferrer">
                         <div style="position:relative; display:inline-block;">
-                            <img src="https://raw.githubusercontent.com/APEX-922/CopyCart/main/icon.png" alt="Icon" class="badge-icon">
-                            <div class="glitter-container" id="badgeGlitterFirefox"></div>
+                            <img src="https://raw.githubusercontent.com/APEX-922/CopyCart/main/icon.png" alt="CopyCart Icon" class="badge-icon">
+                            <div class="glitter-container" id="badgeGlitterFirefox" aria-hidden="true"></div>
                         </div>
                         <span>CopyCart v1.7</span>
                     </a>
@@ -754,7 +754,7 @@
             <div class="custom-middle-card">
                 <p style="color: var(--text-gold); font-size: 14px; font-weight: 600; font-family: 'Montserrat', sans-serif; letter-spacing: 0.3px;">
                     As an Amazon Associate I earn from qualifying purchases.
-                    As and Ebay Partner I may earn from qualifying purchases.
+                    As an eBay Partner I may earn from qualifying purchases.
                 </p>
             </div>
 
@@ -763,22 +763,22 @@
                 
                 <div class="disclaimer-section">
                     <h4>Affiliate Disclosure & Program Notice</h4>
-                    <p>CopyCart is an independent, third-party browser extension and software tool created and operated solely by an individual developer. CopyCart is not owned or operated by Amazon.com, Inc., Mozilla Corporation (Firefox), Chrome or any of their respective subsidiaries.</p>
+                    <p>CopyCart is an independent, third-party browser extension and software tool created and operated solely by an individual developer. CopyCart is not owned or operated by Amazon.com, Inc., Mozilla Corporation (Firefox), Chrome, or any of their respective subsidiaries.</p>
                 </div>
 
                 <div class="disclaimer-section">
                     <h4>Amazon Associates Program Statement</h4>
-                    <p>As an independent participant in the Amazon Services LLC Associates Program, and as an Ebay Partner the sole author and operator of CopyCart earns advertising commissions from qualifying purchases. These commissions are generated when users utilize the CopyCart extension to create, format, or navigate through affiliate-enabled links that direct to Amazon.com or Ebay.com and their localized international storefronts.</p>
+                    <p>As an independent participant in the Amazon Services LLC Associates Program and as an eBay Partner, the sole author and operator of CopyCart earns advertising commissions from qualifying purchases. These commissions are generated when users utilize the CopyCart extension to create, format, or navigate through affiliate-enabled links that direct to Amazon.com or eBay.com and their localized international storefronts.</p>
                 </div>
 
                 <div class="disclaimer-section">
                     <h4>Operational Transparency & User Consent</h4>
-                    <p>The CopyCart extension assists users in generating and managing multiple product links into sharable cart suggestions. When the extension modifies or appends affiliate tracking tags to URLs, it does so to monetize qualifying transactions. This monetization supports the ongoing maintenance, security updates, and free availability of the tool.</p>
+                    <p>The CopyCart extension assists users in generating and managing multiple product links into shareable cart suggestions. When the extension modifies or appends affiliate tracking tags to URLs, it does so to monetize qualifying transactions. This monetization supports the ongoing maintenance, security updates, and free availability of the tool.</p>
                 </div>
 
                 <div class="disclaimer-section">
                     <h4>Limitation of Liability & Trademark Notice</h4>
-                    <p>All product names, logos, trademarks, and brands—including but not limited to Amazon, the Amazon logo, Ebay, Chrome. and Firefox—are the property of their respective owners. All company, product, and service names used by CopyCart are for identification and utility purposes only. Use of these names, trademarks, and brands does not imply endorsement, sponsorship, or formal partnership. The sole creator and author of CopyCart assumes no legal liability or responsibility for third-party platform policy updates, program changes, link redirects, or transaction discrepancies occurring on external e-commerce sites.</p>
+                    <p>All product names, logos, trademarks, and brands—including but not limited to Amazon, the Amazon logo, eBay, Chrome, and Firefox—are the property of their respective owners. All company, product, and service names used by CopyCart are for identification and utility purposes only. Use of these names, trademarks, and brands does not imply endorsement, sponsorship, or formal partnership. The sole creator and author of CopyCart assumes no legal liability or responsibility for third-party platform policy updates, program changes, link redirects, or transaction discrepancies occurring on external e-commerce sites.</p>
                 </div>
             </section>
         </main>
@@ -786,7 +786,7 @@
         <footer>
             <p>Copyright &copy; 2026 APEX. All Rights Reserved.</p>
             <p style="margin-top: 8px;"><a href="https://apex-922.github.io/CopyCart/PrivacyPolicy">Privacy Policy</a></p>
-            <p class="footer-compliance">CopyCart is an independent third-party tool not affiliated with Amazon.com, Inc. As an Amazon Associate I earn from qualifying purchases. As and Ebay Partner I may earn from qualifying purchases.</p>
+            <p class="footer-compliance">CopyCart is an independent third-party tool not affiliated with Amazon.com, Inc. As an Amazon Associate I earn from qualifying purchases. As an eBay Partner I may earn from qualifying purchases.</p>
         </footer>
     </div>
 
@@ -794,10 +794,6 @@
         const ASSOCIATE_TAG = 'apex087e-20';
         let copyTimeout = null;
         let lastGeneratedUrl = null;
-
-        function isMobile() {
-            return window.innerWidth <= 768;
-        }
 
         function createGlitter(containerId, count = 12) {
             const container = document.getElementById(containerId);
@@ -823,7 +819,7 @@
             
             newRow.innerHTML = `
                 <input type="url" class="form-control cartUrl" placeholder="https://www.amazon.com/dp/B08N5WRWNW" aria-label="Amazon Product URL" required>
-                <button type="button" class="btn-remove-link" onclick="removeUrlInput(this)" title="Remove link" aria-label="Remove link">×</button>
+                <button type="button" class="btn-remove-link" onclick="removeUrlInput(this)" title="Remove link" aria-label="Remove link">&times;</button>
             `;
             
             container.appendChild(newRow);
@@ -916,7 +912,7 @@
                     await navigator.clipboard.writeText(text);
                     return true;
                 } catch (err) {
-                    // Fallback execution if Clipboard API write fails on mobile browser constraints
+                    // Fallback execution if Clipboard API fails
                 }
             }
 
@@ -975,23 +971,15 @@
                 generateBtn.classList.add('copied-state');
                 generateBtnText.textContent = 'LINK COPIED!';
 
-                if (isMobile()) {
-                    generateBtn.disabled = true;
-                } else {
-                    resetInputs();
-                    if (copyTimeout) clearTimeout(copyTimeout);
+                if (copyTimeout) clearTimeout(copyTimeout);
 
-                    copyTimeout = setTimeout(() => {
-                        restoreGenerateBtnState();
-                    }, 2500);
-                }
+                copyTimeout = setTimeout(() => {
+                    resetInputs();
+                    restoreGenerateBtnState();
+                }, 2500);
             } else {
                 prompt('Copy your generated link below:', generatedUrlString);
-                if (isMobile()) {
-                    generateBtn.disabled = true;
-                } else {
-                    resetInputs();
-                }
+                resetInputs();
             }
         }
 
