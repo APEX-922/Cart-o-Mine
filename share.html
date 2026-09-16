@@ -123,6 +123,7 @@
       padding-right: 6px;
     }
 
+    /* Scrollbar Styling */
     .item-list::-webkit-scrollbar {
       width: 6px;
     }
@@ -155,6 +156,7 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 10px rgba(223, 186, 103, 0.2);
     }
 
+    /* Completed state styling */
     .item-card.completed {
       background: rgba(5, 7, 10, 0.85);
       border-color: rgba(223, 186, 103, 0.12);
@@ -179,10 +181,10 @@
       display: inline-block;
     }
 
-    /* Product Thumbnail Styling */
+    /* Thumbnail styling */
     .item-thumb-container {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       border-radius: 6px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--card-border);
@@ -203,6 +205,7 @@
       font-size: 9px;
       color: var(--text-muted);
       text-align: center;
+      padding: 4px;
     }
 
     .item-details {
@@ -443,7 +446,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const rawItemsParam = urlParams.get("items") || "";
     
-    // Parse Payload Format supporting image URLs: ID:Title:ImageURL or fallback to ID:Title
+    // Parse Payload Format: itemId:title:imageUrl (safely handling colons in URLs)
     const parsedItems = rawItemsParam.split(",").map(entry => {
       const parts = entry.split(":");
       const cleanId = (parts[0] || "").trim();
@@ -452,9 +455,6 @@
       let cleanImgUrl = "";
 
       if (parts.length >= 3) {
-        // Format: ID:TitlePart1:TitlePart2...:ImageURL (Assuming last segment or middle decode)
-        // Better schema structure: ID:EncodedTitle:EncodedImageUrl
-        // Let's handle standard split where parts[0]=ID, parts[1]=Title, parts[2]=ImageURL
         cleanTitle = parts[1] ? decodeURIComponent(parts[1]) : cleanTitle;
         cleanImgUrl = parts[2] ? decodeURIComponent(parts.slice(2).join(":")) : "";
       } else if (parts.length === 2) {
