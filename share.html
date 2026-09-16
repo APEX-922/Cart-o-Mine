@@ -123,6 +123,7 @@
       padding-right: 6px;
     }
 
+    /* Scrollbar Styling */
     .item-list::-webkit-scrollbar {
       width: 6px;
     }
@@ -155,6 +156,7 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 10px rgba(223, 186, 103, 0.2);
     }
 
+    /* Completed state styling */
     .item-card.completed {
       background: rgba(5, 7, 10, 0.85);
       border-color: rgba(223, 186, 103, 0.12);
@@ -177,32 +179,6 @@
 
     .item-card.completed .item-chk {
       display: inline-block;
-    }
-
-    .item-thumb-container {
-      width: 50px;
-      height: 50px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-
-    .item-thumb {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .item-thumb-placeholder {
-      font-size: 9px;
-      color: var(--text-muted);
-      text-align: center;
-      padding: 4px;
     }
 
     .item-details {
@@ -443,20 +419,13 @@
     const urlParams = new URLSearchParams(window.location.search);
     const rawItemsParam = urlParams.get("items") || "";
     
-    // FIXED: Safely decodes base64-packed payloads so image URLs, titles, and IDs parse 100% cleanly without breaking on colons.
+    // Parse Payload Format (ID:Title,ID:Title)
     const parsedItems = rawItemsParam.split(",").map(entry => {
-      try {
-        const jsonStr = decodeURIComponent(escape(atob(entry.trim())));
-        const data = JSON.parse(jsonStr);
-        return {
-          id: (data.id || "").trim(),
-          title: data.t || `eBay Item #${data.id}`,
-          imgUrl: data.i || ""
-        };
-      } catch (e) {
-        // Fallback for older links if any exist
-        return { id: entry.trim(), title: `eBay Item #${entry.trim()}`, imgUrl: "" };
-      }
+      const [id, ...titleParts] = entry.split(":");
+      const cleanId = (id || "").trim();
+      const rawTitle = titleParts.join(":");
+      const cleanTitle = rawTitle ? decodeURIComponent(rawTitle) : `eBay Item #${cleanId}`;
+      return { id: cleanId, title: cleanTitle };
     }).filter(item => item.id.length > 0);
 
     const itemCountText = document.getElementById("item-count-text");
@@ -506,22 +475,6 @@
         chk.type = "checkbox";
         chk.className = "item-chk";
         chk.checked = isAlreadyCompleted;
-
-        const thumbContainer = document.createElement("div");
-        thumbContainer.className = "item-thumb-container";
-
-        if (item.imgUrl) {
-          const img = document.createElement("img");
-          img.className = "item-thumb";
-          img.src = item.imgUrl;
-          img.alt = item.title;
-          img.onerror = () => {
-            thumbContainer.innerHTML = `<div class="item-thumb-placeholder">No Image</div>`;
-          };
-          thumbContainer.appendChild(img);
-        } else {
-          thumbContainer.innerHTML = `<div class="item-thumb-placeholder">No Image</div>`;
-        }
 
         const details = document.createElement("div");
         details.className = "item-details";
@@ -573,7 +526,6 @@
         });
 
         card.appendChild(chk);
-        card.appendChild(thumbContainer);
         card.appendChild(details);
         card.appendChild(btn);
 
