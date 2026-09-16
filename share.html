@@ -123,7 +123,6 @@
       padding-right: 6px;
     }
 
-    /* Scrollbar Styling */
     .item-list::-webkit-scrollbar {
       width: 6px;
     }
@@ -156,7 +155,6 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 10px rgba(223, 186, 103, 0.2);
     }
 
-    /* Completed state styling */
     .item-card.completed {
       background: rgba(5, 7, 10, 0.85);
       border-color: rgba(223, 186, 103, 0.12);
@@ -181,7 +179,6 @@
       display: inline-block;
     }
 
-    /* Thumbnail styling */
     .item-thumb-container {
       width: 50px;
       height: 50px;
@@ -446,22 +443,20 @@
     const urlParams = new URLSearchParams(window.location.search);
     const rawItemsParam = urlParams.get("items") || "";
     
-    // Parse Payload Format: itemId:title:imageUrl (safely handling colons in URLs)
+    // FIXED: Safely decodes base64-packed payloads so image URLs, titles, and IDs parse 100% cleanly without breaking on colons.
     const parsedItems = rawItemsParam.split(",").map(entry => {
-      const parts = entry.split(":");
-      const cleanId = (parts[0] || "").trim();
-      
-      let cleanTitle = `eBay Item #${cleanId}`;
-      let cleanImgUrl = "";
-
-      if (parts.length >= 3) {
-        cleanTitle = parts[1] ? decodeURIComponent(parts[1]) : cleanTitle;
-        cleanImgUrl = parts[2] ? decodeURIComponent(parts.slice(2).join(":")) : "";
-      } else if (parts.length === 2) {
-        cleanTitle = parts[1] ? decodeURIComponent(parts[1]) : cleanTitle;
+      try {
+        const jsonStr = decodeURIComponent(escape(atob(entry.trim())));
+        const data = JSON.parse(jsonStr);
+        return {
+          id: (data.id || "").trim(),
+          title: data.t || `eBay Item #${data.id}`,
+          imgUrl: data.i || ""
+        };
+      } catch (e) {
+        // Fallback for older links if any exist
+        return { id: entry.trim(), title: `eBay Item #${entry.trim()}`, imgUrl: "" };
       }
-
-      return { id: cleanId, title: cleanTitle, imgUrl: cleanImgUrl };
     }).filter(item => item.id.length > 0);
 
     const itemCountText = document.getElementById("item-count-text");
@@ -512,7 +507,6 @@
         chk.className = "item-chk";
         chk.checked = isAlreadyCompleted;
 
-        // Thumbnail element container
         const thumbContainer = document.createElement("div");
         thumbContainer.className = "item-thumb-container";
 
