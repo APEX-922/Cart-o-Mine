@@ -312,6 +312,14 @@
             font-family: 'Montserrat', sans-serif;
         }
 
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 16px;
+            margin-top: -20px;
+            margin-bottom: 40px;
+        }
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -319,7 +327,7 @@
             margin-bottom: 60px;
         }
 
-        .feature-card {
+        .feature-card, .step-item {
             background: var(--card-bg);
             backdrop-filter: blur(16px);
             border: 1px solid var(--card-border);
@@ -330,7 +338,7 @@
             transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .feature-card::before {
+        .feature-card::before, .step-item::before {
             content: '';
             position: absolute;
             top: 0;
@@ -342,7 +350,7 @@
             transition: opacity 0.3s ease;
         }
 
-        .feature-card:hover {
+        .feature-card:hover, .step-item:hover {
             border-color: var(--card-border-glow);
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 30px rgba(223, 186, 103, 0.35);
         }
@@ -357,10 +365,54 @@
             z-index: 2;
         }
 
-        .feature-card p {
+        .feature-card p, .step-item p {
             color: var(--text-muted);
             font-size: 14.5px;
             line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+
+        .how-it-works {
+            padding: 40px 0 60px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .step-item {
+            text-align: center;
+            padding: 28px 24px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gold-gradient);
+            color: #080A0F;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(223, 186, 103, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-item h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-gold);
             position: relative;
             z-index: 2;
         }
@@ -490,13 +542,36 @@
                     <p>All data stays directly on your machine in local storage. No trackers, no data collection, and no remote servers.</p>
                 </div>
             </div>
+
+            <section id="how-it-works" class="how-it-works">
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">Get started with CopyCart in three simple steps</p>
+
+                <div class="steps-grid">
+                    <div class="step-item magnetic-target">
+                        <div class="step-number">1</div>
+                        <h4>Open Your Cart</h4>
+                        <p>Navigate to your active shopping cart page on any supported store domain.</p>
+                    </div>
+                    <div class="step-item magnetic-target">
+                        <div class="step-number">2</div>
+                        <h4>Generate & Select</h4>
+                        <p>Click the extension icon to parse your items. Select or unselect specific products using checkboxes.</p>
+                    </div>
+                    <div class="step-item magnetic-target">
+                        <div class="step-number">3</div>
+                        <h4>Copy or Save</h4>
+                        <p>Copy a multi-cart batch link to your clipboard or save the configuration as a named cart template.</p>
+                    </div>
+                </div>
+            </section>
         </main>
 
-    <footer>
-      <p>Copyright &copy; 2026 APEX. All Rights Reserved.</p>
-      <p style="margin-top: 8px;"><a href="https://apex-922.github.io/CopyCart/PrivacyPolicy">Privacy Policy</a></p>
-      <p class="footer-compliance">CopyCart is an independent third-party tool and is not affiliated with, endorsed by, or sponsored by Amazon.com, Inc., eBay Inc., Google LLC, or Mozilla Corporation. As an Amazon Associate CopyCart earns from qualifying purchases. As an eBay Partner CopyCart may earn from qualifying purchases. Google Chrome is a trademark of Google LLC. Firefox is a trademark of Mozilla Foundation.</p>
-    </footer>
+        <footer>
+            <p>Copyright &copy; 2026 APEX. All Rights Reserved.</p>
+            <p style="margin-top: 8px;"><a href="https://apex-922.github.io/CopyCart/PrivacyPolicy">Privacy Policy</a></p>
+            <p class="footer-compliance">CopyCart is an independent third-party tool and is not affiliated with, endorsed by, or sponsored by Amazon.com, Inc., eBay Inc., Google LLC, or Mozilla Corporation. As an Amazon Associate CopyCart earns from qualifying purchases. As an eBay Partner CopyCart may earn from qualifying purchases. Google Chrome is a trademark of Google LLC. Firefox is a trademark of Mozilla Foundation.</p>
+        </footer>
     </div>
 
     <script>
