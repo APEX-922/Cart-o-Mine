@@ -125,14 +125,19 @@
             height: auto;
             max-height: 95px;
             overflow: visible;
-            filter: drop-shadow(0 0 25px rgba(223, 186, 103, 0.5)) brightness(1.1) !important;
+            filter: drop-shadow(0 0 25px rgba(223, 186, 103, 0.5)) brightness(1.15) !important;
             forced-color-adjust: none !important;
             transition: transform 0.3s ease, filter 0.3s ease;
         }
 
+        .svg-logo-banner text {
+            fill: url(#goldGradient) !important;
+            forced-color-adjust: none !important;
+        }
+
         .logo:hover .svg-logo-banner {
             transform: scale(1.03);
-            filter: drop-shadow(0 0 35px rgba(223, 186, 103, 0.75)) brightness(1.2) !important;
+            filter: drop-shadow(0 0 35px rgba(223, 186, 103, 0.75)) brightness(1.25) !important;
         }
 
         .nav-links {
@@ -233,14 +238,12 @@
             font-family: 'Montserrat', sans-serif;
             font-size: 14px;
             font-weight: 800;
-            color: var(--text-gold);
+            color: #F3D99B !important;
             margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             text-align: center;
+            forced-color-adjust: none !important;
         }
 
         .badge {
@@ -253,7 +256,7 @@
             background: rgba(18, 22, 31, 0.85);
             backdrop-filter: blur(8px);
             border: 1px solid var(--card-border);
-            color: var(--text-gold);
+            color: #F3D99B !important;
             font-size: 15px;
             font-weight: 700;
             font-family: 'Montserrat', sans-serif;
@@ -261,6 +264,12 @@
             position: relative;
             transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
             width: 100%;
+            forced-color-adjust: none !important;
+        }
+
+        .badge span {
+            color: #F3D99B !important;
+            forced-color-adjust: none !important;
         }
 
         .badge:hover {
