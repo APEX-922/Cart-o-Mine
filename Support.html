@@ -265,6 +265,20 @@ height: 24px;
 object-fit: contain;
 }
 
+.badge-text {
+display: inline-block;
+color: var(--text-gold);
+font-family: 'Montserrat', sans-serif;
+font-weight: 700;
+font-size: 15px;
+letter-spacing: 0.2px;
+white-space: nowrap;
+}
+
+.badge:hover .badge-text {
+color: #080A0F;
+}
+
 .intro-banner {
 max-width: 660px;
 margin: 32px auto;
@@ -738,7 +752,7 @@ This page is solely here to help support CopyCart. It is entirely optional and u
 <img src="https://raw.githubusercontent.com/APEX-922/CopyCart/main/icon.png" alt="CopyCart Icon" class="badge-icon">
 <div class="glitter-container" id="badgeGlitterChrome" aria-hidden="true"></div>
 </div>
-<span>CopyCart v1.6</span>
+<span class="badge-text">CopyCart v1.6</span>
 </a>
 </div>
 
@@ -750,7 +764,7 @@ This page is solely here to help support CopyCart. It is entirely optional and u
 <img src="https://raw.githubusercontent.com/APEX-922/CopyCart/main/icon.png" alt="CopyCart Icon" class="badge-icon">
 <div class="glitter-container" id="badgeGlitterFirefox" aria-hidden="true"></div>
 </div>
-<span>CopyCart v1.6</span>
+<span class="badge-text">CopyCart v1.6</span>
 </a>
 </div>
 </div>
