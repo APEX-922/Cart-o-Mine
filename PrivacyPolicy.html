@@ -125,13 +125,21 @@
             height: auto;
             max-height: 95px;
             overflow: visible;
-            filter: drop-shadow(0 0 25px rgba(223, 186, 103, 0.5));
+            filter: drop-shadow(0 0 25px rgba(223, 186, 103, 0.6)) brightness(1.15) !important;
+            forced-color-adjust: none !important;
+            color-scheme: only dark !important;
             transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .svg-logo-banner text {
+            fill: #F3D99B !important;
+            color: #F3D99B !important;
+            forced-color-adjust: none !important;
         }
 
         .logo:hover .svg-logo-banner {
             transform: scale(1.03);
-            filter: drop-shadow(0 0 35px rgba(223, 186, 103, 0.75));
+            filter: drop-shadow(0 0 35px rgba(223, 186, 103, 0.85)) brightness(1.25) !important;
         }
 
         .nav-links {
@@ -190,7 +198,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(223, 186, 103, 0.15), transparent 80%);
+            background: radial-gradient(circle 250px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(223, 186, 103, 0.15), transparent 80%);
             pointer-events: none;
             transition: opacity 0.3s ease;
         }
@@ -283,11 +291,6 @@
                 <div style="position:relative; width: 100%; display: flex; justify-content: center; align-items: center;">
                     <svg class="svg-logo-banner" viewBox="0 0 650 100" xmlns="http://www.w3.org/2000/svg">
                         <defs>
-                            <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#F9E4B7" />
-                                <stop offset="50%" stop-color="#DFBA67" />
-                                <stop offset="100%" stop-color="#9E7D3B" />
-                            </linearGradient>
                             <filter id="goldGlow" x="-30%" y="-30%" width="160%" height="160%">
                                 <feGaussianBlur stdDeviation="5" result="blur" />
                                 <feComponentTransfer in="blur" result="glow1">
@@ -304,13 +307,15 @@
                             y="55%" 
                             dominant-baseline="middle" 
                             text-anchor="middle"
+                            fill="#F3D99B"
+                            filter="url(#goldGlow)"
                             style='
                                 font-family: "Montserrat", "Arial Black", sans-serif;
                                 font-weight: 900;
                                 font-size: 76px;
                                 letter-spacing: -3px;
-                                fill: url("#goldGradient");
-                                filter: url("#goldGlow");
+                                fill: #F3D99B !important;
+                                forced-color-adjust: none !important;
                             '>
                             CopyCart
                         </text>
