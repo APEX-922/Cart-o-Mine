@@ -24,26 +24,18 @@
             --radius-md: 8px;
         }
 
-        html {
-            background-color: #080A0F !important;
-            forced-color-adjust: none !important;
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            forced-color-adjust: none !important;
         }
 
         body {
-            filter: brightness(1) contrast(1) !important;
-            isolation: isolate !important;
-            background-color: #080A0F !important;
+            background-color: var(--bg-dark);
             background-image: 
                 radial-gradient(circle at 50% 0%, rgba(223, 186, 103, 0.15) 0%, transparent 65%),
-                radial-gradient(circle at 80% 90%, rgba(158, 125, 59, 0.1) 0%, transparent 50%) !important;
+                radial-gradient(circle at 80% 90%, rgba(158, 125, 59, 0.1) 0%, transparent 50%);
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
@@ -51,25 +43,22 @@
             min-height: 100vh;
         }
 
-        /* Fixed Centered Background Logo */
         .parallax-bg {
-            position: fixed !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            width: 80vw;
-            max-width: 550px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 550px;
             height: 550px;
             background-image: url('https://raw.githubusercontent.com/APEX-922/CopyCart/main/icon.png');
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
-            opacity: 0.18;
+            opacity: 0.15;
             pointer-events: none;
             z-index: 0;
-            filter: drop-shadow(0 0 35px rgba(223, 186, 103, 0.35)) brightness(1.2) !important;
+            filter: drop-shadow(0 0 35px rgba(223, 186, 103, 0.25));
             transition: opacity 0.3s ease, filter 0.3s ease;
-            forced-color-adjust: none !important;
         }
 
         .glitter-container {
@@ -131,20 +120,18 @@
             cursor: pointer;
         }
 
-        /* SVG Direct Protection */
         .svg-logo-banner {
             width: 100%;
             height: auto;
             max-height: 95px;
             overflow: visible;
-            filter: drop-shadow(0 0 25px rgba(223, 186, 103, 0.6)) brightness(1.2) !important;
-            forced-color-adjust: none !important;
+            filter: drop-shadow(0 0 25px rgba(223, 186, 103, 0.5));
             transition: transform 0.3s ease, filter 0.3s ease;
         }
 
         .logo:hover .svg-logo-banner {
             transform: scale(1.03);
-            filter: drop-shadow(0 0 35px rgba(223, 186, 103, 0.85)) brightness(1.3) !important;
+            filter: drop-shadow(0 0 35px rgba(223, 186, 103, 0.75));
         }
 
         .nav-links {
@@ -245,10 +232,13 @@
             font-family: 'Montserrat', sans-serif;
             font-size: 14px;
             font-weight: 800;
-            color: #F3D99B !important;
+            color: var(--text-gold);
             margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-align: center;
         }
 
@@ -410,14 +400,13 @@
                             y="55%" 
                             dominant-baseline="middle" 
                             text-anchor="middle"
-                            fill="url(#goldGradient)"
-                            filter="url(#goldGlow)"
                             style='
                                 font-family: "Montserrat", "Arial Black", sans-serif;
                                 font-weight: 900;
                                 font-size: 76px;
                                 letter-spacing: -3px;
-                                forced-color-adjust: none;
+                                fill: url("#goldGradient");
+                                filter: url("#goldGlow");
                             '>
                             CopyCart
                         </text>
@@ -500,11 +489,11 @@
 
                 if (centerDist < threshold) {
                     const intensity = 1 - (centerDist / threshold);
-                    centerLogo.style.opacity = (0.18 + (intensity * 0.5)).toString();
-                    centerLogo.style.filter = `drop-shadow(0 0 ${35 + intensity * 40}px rgba(223, 186, 103, ${0.35 + intensity * 0.65})) brightness(${1.2 + intensity * 0.3})`;
+                    centerLogo.style.opacity = (0.15 + (intensity * 0.6)).toString();
+                    centerLogo.style.filter = `drop-shadow(0 0 ${35 + intensity * 40}px rgba(223, 186, 103, ${0.3 + intensity * 0.7})) brightness(${1 + intensity * 0.25})`;
                 } else {
-                    centerLogo.style.opacity = '0.18';
-                    centerLogo.style.filter = 'drop-shadow(0 0 35px rgba(223, 186, 103, 0.35)) brightness(1.2)';
+                    centerLogo.style.opacity = '0.15';
+                    centerLogo.style.filter = 'drop-shadow(0 0 35px rgba(223, 186, 103, 0.25)) brightness(1)';
                 }
             });
         }
