@@ -597,7 +597,7 @@ border-color: var(--theme-border-glow);
 box-shadow: 0 0 35px var(--theme-border-glow), 0 8px 25px rgba(0,0,0,0.5), inset 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
-.btn-generate:disabled {
+.btn-generate:disabled, .btn-share:disabled {
 cursor: not-allowed;
 opacity: 0.65;
 }
@@ -861,11 +861,11 @@ As an eBay Partner I may earn from qualifying purchases.
 </section>
 </main>
 
-    <footer>
-      <p>Copyright &copy; 2026 APEX. All Rights Reserved.</p>
-      <p style="margin-top: 8px;"><a href="https://apex-922.github.io/CopyCart/PrivacyPolicy">Privacy Policy</a></p>
-      <p class="footer-compliance">CopyCart is an independent third-party tool and is not affiliated with, endorsed by, or sponsored by Amazon.com, Inc., eBay Inc., Google LLC, or Mozilla Corporation. As an Amazon Associate CopyCart earns from qualifying purchases. As an eBay Partner CopyCart may earn from qualifying purchases. Google Chrome is a trademark of Google LLC. Firefox is a trademark of Mozilla Foundation.</p>
-    </footer>
+<footer>
+  <p>Copyright &copy; 2026 APEX. All Rights Reserved.</p>
+  <p style="margin-top: 8px;"><a href="https://apex-922.github.io/CopyCart/PrivacyPolicy">Privacy Policy</a></p>
+  <p class="footer-compliance">CopyCart is an independent third-party tool and is not affiliated with, endorsed by, or sponsored by Amazon.com, Inc., eBay Inc., Google LLC, or Mozilla Corporation. As an Amazon Associate CopyCart earns from qualifying purchases. As an eBay Partner CopyCart may earn from qualifying purchases. Google Chrome is a trademark of Google LLC. Firefox is a trademark of Mozilla Foundation.</p>
+</footer>
 
 </div>
 
@@ -934,10 +934,18 @@ handleUrlInputChange();
 }
 }
 
-function resetInputs() {
+// Clears values and resets input field rows back to a single clean field
+function resetFormInputs() {
 const container = document.getElementById('urlInputsContainer');
 if (!container) return;
+
+// Explicitly clear all current input elements first
+const inputs = container.querySelectorAll('.cartUrl');
+inputs.forEach(input => { input.value = ''; });
+
+// Restore single baseline input row
 container.innerHTML = `<div class="form-group input-row"><input type="url" class="form-control cartUrl" placeholder="https://www.amazon.com/dp/B08N5WRWNW or https://www.ebay.com/itm/123456789012" aria-label="Product URL" oninput="handleUrlInputChange()" required></div>`;
+
 lastGeneratedUrl = null;
 handleUrlInputChange();
 }
@@ -953,7 +961,9 @@ if (generateBtnText) generateBtnText.textContent = 'Combine and Copy';
 }
 
 function restoreShareBtnState() {
+const shareBtn = document.getElementById('shareBtn');
 const shareBtnText = document.getElementById('shareBtnText');
+if (shareBtn) shareBtn.disabled = false;
 if (shareBtnText) shareBtnText.textContent = 'Combine and Share';
 }
 
@@ -1126,13 +1136,15 @@ generateBtnText.textContent = 'LINK COPIED!';
 
 if (copyTimeout) clearTimeout(copyTimeout);
 
+// Auto-reset form inputs immediately
+resetFormInputs();
+
 copyTimeout = setTimeout(() => {
-resetInputs();
 restoreGenerateBtnState();
 }, 2500);
 } else {
 prompt('Copy your generated link below:', generatedUrlString);
-resetInputs();
+resetFormInputs();
 restoreGenerateBtnState();
 }
 }
@@ -1140,7 +1152,7 @@ restoreGenerateBtnState();
 async function shareGeneratedLink(event) {
 if (event) {
 event.preventDefault();
-event.stopPropagation(); // Stops mobile synthetic touch/click bubbling
+event.stopPropagation();
 }
 
 if (isSharingInProgress) return;
@@ -1149,11 +1161,16 @@ let targetUrl = lastGeneratedUrl || getGeneratedUrl();
 if (!targetUrl) return;
 
 const shareBtn = document.getElementById('shareBtn');
-if (shareBtn) createFireworks(shareBtn);
+if (shareBtn) {
+shareBtn.disabled = true;
+createFireworks(shareBtn);
+}
 
 isSharingInProgress = true;
-
 if (shareTimeout) clearTimeout(shareTimeout);
+
+// Reset input field right away
+resetFormInputs();
 
 try {
 if (navigator.share) {
@@ -1168,18 +1185,15 @@ alert('Sharing is not natively supported on this browser. Link has been copied t
 }
 }
 } catch (err) {
-// Ignore AbortError when users cancel the native share sheet
 if (err.name !== 'AbortError') {
 console.error('Error sharing:', err);
 }
 } finally {
-// Align with the 2500ms timeout to allow Android focus transitions to settle
 shareTimeout = setTimeout(() => {
-resetInputs();
 restoreGenerateBtnState();
 restoreShareBtnState();
 isSharingInProgress = false;
-}, 2500);
+}, 1200);
 }
 }
 
