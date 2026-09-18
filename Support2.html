@@ -1013,7 +1013,7 @@ const payload = ebayItems.join(',');
 return `https://apex-922.github.io/CopyCart/share.html?items=${payload}`;
 }
 
-// ROUTE B: AMAZON GENERATION (ORIGINAL LOGIC UNCHANGED)
+// ROUTE B: AMAZON GENERATION
 if (amazonAsins.length > 0) {
 const cartUrlParams = new URLSearchParams();
 cartUrlParams.append('AssociateTag', ASSOCIATE_TAG);
@@ -1112,13 +1112,14 @@ if (event) event.preventDefault();
 let targetUrl = lastGeneratedUrl || getGeneratedUrl();
 if (!targetUrl) return;
 
-// Clear state immediately so focus regain cannot re-trigger navigator.share
-lastGeneratedUrl = null;
-
 const shareBtn = document.getElementById('shareBtn');
 if (shareBtn) createFireworks(shareBtn);
 
 await copyToClipboard(targetUrl);
+
+// Execute field reset immediately BEFORE opening Web Share API
+resetInputs();
+restoreGenerateBtnState();
 
 if (navigator.share) {
 try {
@@ -1132,9 +1133,6 @@ url: targetUrl
 } else {
 alert('Sharing is not natively supported on this browser. Link has been copied to your clipboard!');
 }
-
-resetInputs();
-restoreGenerateBtnState();
 }
 
 function createFireworks(btn) {
