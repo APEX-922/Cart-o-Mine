@@ -3,16 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CopyCart Support & Link Generator</title>
+  <title>CopyCart - Multi-Cart Generator</title>
   <style>
     :root {
-      --primary-color: #0066cc;
-      --primary-hover: #0052a3;
-      --success-color: #28a745;
-      --bg-color: #f8f9fa;
-      --card-bg: #ffffff;
-      --text-color: #333333;
-      --border-color: #cccccc;
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #2563eb;
+      --accent-blue-hover: #1d4ed8;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --input-bg: #0f172a;
+      --input-border: #475569;
     }
 
     * {
@@ -23,91 +27,171 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      line-height: 1.5;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
       padding: 20px;
     }
 
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: var(--card-bg);
-      padding: 24px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    header {
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 24px;
     }
 
-    h1 {
-      font-size: 1.5rem;
-      margin-bottom: 16px;
-      text-align: center;
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--text-main);
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 6px;
+    }
+
+    main {
+      width: 100%;
+      max-width: 580px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
     }
 
     .form-group {
       margin-bottom: 16px;
     }
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
+    .input-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 12px;
     }
 
     .form-control {
-      width: 100%;
-      padding: 10px 12px;
-      font-size: 1rem;
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
+      flex: 1;
+      background-color: var(--input-bg);
+      border: 1px solid var(--input-border);
+      color: var(--text-main);
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      border-radius: 8px;
       outline: none;
+      transition: border-color 0.2s;
     }
 
     .form-control:focus {
-      border-color: var(--primary-color);
+      border-color: var(--accent-blue);
+    }
+
+    .btn-remove {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      line-height: 1;
+      border-radius: 4px;
+    }
+
+    .btn-remove:hover {
+      color: var(--accent-red);
+    }
+
+    .btn-add {
+      background-color: transparent;
+      border: 1px dashed var(--input-border);
+      color: var(--text-muted);
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+      transition: all 0.2s;
+    }
+
+    .btn-add:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
     }
 
     .btn-group {
       display: flex;
-      gap: 10px;
-      margin-top: 20px;
+      gap: 12px;
     }
 
     .btn {
       flex: 1;
-      padding: 12px 16px;
-      font-size: 1rem;
+      padding: 14px;
+      font-size: 0.95rem;
       font-weight: 600;
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
       cursor: pointer;
-      text-align: center;
-      transition: background-color 0.2s ease;
+      transition: background-color 0.2s, transform 0.1s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
     }
 
     .btn-primary {
-      background-color: var(--primary-color);
+      background-color: var(--accent-blue);
       color: #ffffff;
     }
 
     .btn-primary:hover {
-      background-color: var(--primary-hover);
+      background-color: var(--accent-blue-hover);
     }
 
     .btn-primary.copied-state {
-      background-color: var(--success-color);
+      background-color: var(--accent-green);
     }
 
     .btn-secondary {
-      background-color: #6c757d;
-      color: #ffffff;
+      background-color: #334155;
+      color: var(--text-main);
     }
 
     .btn-secondary:hover {
-      background-color: #5a6268;
+      background-color: #475569;
     }
 
-    /* Fireworks Canvas Styling */
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      padding: 12px 0;
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: underline;
+    }
+
+    footer a:hover {
+      color: var(--text-main);
+    }
+
     #fireworksCanvas {
       position: fixed;
       top: 0;
@@ -123,33 +207,42 @@
 
   <canvas id="fireworksCanvas"></canvas>
 
-  <div class="container">
-    <h1>CopyCart Link Generator</h1>
-    
-    <div id="urlInputsContainer">
-      <div class="form-group input-row">
-        <label for="cartUrlInput">Product URL</label>
-        <input 
-          type="url" 
-          id="cartUrlInput" 
-          class="form-control cartUrl" 
-          placeholder="https://www.amazon.com/dp/B08N5WRWNW or https://www.ebay.com/itm/123456789012" 
-          aria-label="Product URL" 
-          oninput="handleUrlInputChange()" 
-          required
-        >
+  <header>
+    <h1>CopyCart</h1>
+    <p>Generate multi-item referral links & bundle carts instantly</p>
+  </header>
+
+  <main>
+    <div class="card">
+      <div id="urlInputsContainer">
+        <div class="input-row">
+          <input 
+            type="url" 
+            class="form-control cartUrl" 
+            placeholder="https://www.amazon.com/dp/B08N5WRWNW or https://www.ebay.com/itm/123456789012" 
+            aria-label="Product URL" 
+            oninput="handleUrlInputChange()" 
+            required
+          >
+        </div>
+      </div>
+
+      <button type="button" class="btn-add" onclick="addInputRow()">+ Add Another Product URL</button>
+
+      <div class="btn-group">
+        <button id="generateBtn" class="btn btn-primary" onclick="generateAndCopyLink(event)">
+          <span id="generateBtnText">GENERATE & COPY LINK</span>
+        </button>
+        <button id="shareBtn" class="btn btn-secondary" onclick="shareGeneratedLink(event)">
+          SHARE LINK
+        </button>
       </div>
     </div>
+  </main>
 
-    <div class="btn-group">
-      <button id="generateBtn" class="btn btn-primary" onclick="generateAndCopyLink(event)">
-        <span id="generateBtnText">GENERATE & COPY LINK</span>
-      </button>
-      <button id="shareBtn" class="btn btn-secondary" onclick="shareGeneratedLink(event)">
-        SHARE LINK
-      </button>
-    </div>
-  </div>
+  <footer>
+    <p>&copy; CopyCart. All rights reserved. | <a href="#">Privacy Policy</a></p>
+  </footer>
 
   <script>
     // CopyCart - Global State
@@ -158,16 +251,54 @@
     let isSharingInProgress = false;
 
     /**
-     * Retrieves and processes input value
+     * Adds an extra URL input field row
      */
-    function getGeneratedUrl() {
-      const input = document.querySelector('.cartUrl');
-      if (!input || !input.value.trim()) return null;
-      return input.value.trim();
+    function addInputRow() {
+      const container = document.getElementById('urlInputsContainer');
+      if (!container) return;
+
+      const row = document.createElement('div');
+      row.className = 'input-row';
+      row.innerHTML = `
+        <input 
+          type="url" 
+          class="form-control cartUrl" 
+          placeholder="https://www.amazon.com/dp/B08N5WRWNW or https://www.ebay.com/itm/123456789012" 
+          aria-label="Product URL" 
+          oninput="handleUrlInputChange()" 
+          required
+        >
+        <button type="button" class="btn-remove" onclick="removeInputRow(this)">&times;</button>
+      `;
+      container.appendChild(row);
     }
 
     /**
-     * Input Change Handler
+     * Removes a specific input field row
+     */
+    function removeInputRow(button) {
+      const row = button.closest('.input-row');
+      if (row) {
+        row.remove();
+        handleUrlInputChange();
+      }
+    }
+
+    /**
+     * Collates input URLs into final string
+     */
+    function getGeneratedUrl() {
+      const inputs = document.querySelectorAll('.cartUrl');
+      const urls = Array.from(inputs)
+        .map(input => input.value.trim())
+        .filter(url => url.length > 0);
+
+      if (urls.length === 0) return null;
+      return urls.join(',');
+    }
+
+    /**
+     * Handles live typing adjustments
      */
     function handleUrlInputChange() {
       const generateBtnText = document.getElementById('generateBtnText');
@@ -177,19 +308,16 @@
     }
 
     /**
-     * Resets the URL input container back to its default state
+     * Resets inputs back to single empty field
      */
     function resetInputs() {
       const container = document.getElementById('urlInputsContainer');
       if (!container) return;
       
-      // Re-render fresh input box
       container.innerHTML = `
-        <div class="form-group input-row">
-          <label for="cartUrlInput">Product URL</label>
+        <div class="input-row">
           <input 
             type="url" 
-            id="cartUrlInput" 
             class="form-control cartUrl" 
             placeholder="https://www.amazon.com/dp/B08N5WRWNW or https://www.ebay.com/itm/123456789012" 
             aria-label="Product URL" 
@@ -203,7 +331,7 @@
     }
 
     /**
-     * Restores the Generate button state back to its default state
+     * Restores Generate Button label
      */
     function restoreGenerateBtnState() {
       const generateBtn = document.getElementById('generateBtn');
@@ -214,7 +342,7 @@
     }
 
     /**
-     * Copies text string to clipboard using async API or fallback
+     * Clipboard fallback copy helper
      */
     async function copyToClipboard(text) {
       if (navigator.clipboard && window.isSecureContext) {
@@ -222,11 +350,10 @@
           await navigator.clipboard.writeText(text);
           return true;
         } catch (err) {
-          console.warn('Clipboard API failed, falling back:', err);
+          console.warn('Clipboard API failed, using fallback:', err);
         }
       }
 
-      // Fallback for non-secure contexts / legacy browsers
       const textArea = document.createElement('textarea');
       textArea.value = text;
       textArea.style.position = 'fixed';
@@ -247,7 +374,7 @@
     }
 
     /**
-     * Handles Link Generation & Auto-Copying
+     * Generate & Copy Action
      */
     async function generateAndCopyLink(event) {
       if (event) event.preventDefault();
@@ -282,15 +409,14 @@
     }
 
     /**
-     * Handles Native Device Sharing Modal Triggering
+     * Native Modal Share Action with Execution Guarding
      */
     async function shareGeneratedLink(event) {
       if (event) {
         event.preventDefault();
-        event.stopPropagation(); // Stops mobile touch event propagation bubbling
+        event.stopPropagation();
       }
 
-      // Prevent execution if already processing share request
       if (isSharingInProgress) return;
 
       let targetUrl = lastGeneratedUrl || getGeneratedUrl();
@@ -308,13 +434,12 @@
             url: targetUrl
           });
         } catch (err) {
-          // User cancelled modal or share sheet failed
+          // Modal dismissed by user
         } finally {
-          // Cleanup executes AFTER modal is closed
+          // Clears inputs & restores state AFTER modal dismissal
           resetInputs();
           restoreGenerateBtnState();
           
-          // Delay lock release to swallow phantom focus/tap events
           setTimeout(() => {
             isSharingInProgress = false;
           }, 500);
@@ -331,11 +456,11 @@
     }
 
     /**
-     * Lightweight Fireworks Animation Particle Generator
+     * Fireworks Particle Generator
      */
     function createFireworks(element) {
       const canvas = document.getElementById('fireworksCanvas');
-      if (!canvas) return;
+      if (!canvas || !element) return;
       
       const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth;
