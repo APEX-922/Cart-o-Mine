@@ -3,360 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CopyCart — Shared Cart Items</title>
-
-  <!-- HTML Meta Tags -->
-  <meta name="description" content="View and add shared items directly to your cart with CopyCart.">
-
-  <!-- Facebook Meta Tags / Open Graph -->
-  <meta property="og:url" content="https://apex-922.github.io/CopyCart/">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="☆ CopyCart ☆ Someone Shared a Cart With You">
-  <meta property="og:description" content="View and add shared items directly to your cart with CopyCart.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/APEX-922/CopyCart/main/icon.png">
-
-  <!-- Twitter Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta property="twitter:domain" content="apex-922.github.io">
-  <meta property="twitter:url" content="https://apex-922.github.io/CopyCart/">
-  <meta name="twitter:title" content="☆ CopyCart ☆ Someone Shared a Cart With You">
-  <meta name="twitter:description" content="View and add shared items directly to your cart with CopyCart.">
-  <meta name="twitter:image" content="https://raw.githubusercontent.com/APEX-922/CopyCart/main/icon.png">
-
-  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/APEX-922/CopyCart/main/icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Inter:wght@300;400;500;600;700&display=swap">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Shared Items | CopyCart</title>
   <style>
     :root {
-      --bg-dark: #080A0F;
-      --card-bg: rgba(18, 22, 31, 0.85);
-      --card-border: rgba(223, 186, 103, 0.25);
-      --card-border-glow: rgba(223, 186, 103, 0.9);
-      --text-main: #ffffff;
-      --text-muted: rgba(255, 255, 255, 0.7);
-      --text-gold: #F3D99B;
-      --gold-gradient: linear-gradient(135deg, #F9E4B7 0%, #DFBA67 50%, #9E7D3B 100%);
-      --gold-solid: #DFBA67;
-      --ebay-blue-gradient: linear-gradient(135deg, #0064D2 0%, #0046BE 100%);
-      --ebay-blue-solid: #0064D2;
-      --radius-lg: 12px;
-      --radius-md: 8px;
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-color: #212529;
+      --text-muted: #6c757d;
+      --border-color: #e9ecef;
+      --primary-color: #0066cc;
+      --primary-hover: #0052a3;
+      --completed-bg: #f1f3f5;
+      --completed-border: #ced4da;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     body {
-      background-color: var(--bg-dark);
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(223, 186, 103, 0.15) 0%, transparent 65%),
-        radial-gradient(circle at 80% 90%, rgba(158, 125, 59, 0.1) 0%, transparent 50%);
-      color: var(--text-main);
-      line-height: 1.6;
-      overflow-x: hidden;
-      position: relative;
-      min-height: 100vh;
-    }
-
-    .parallax-bg {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 550px;
-      height: 550px;
-      background-image: url('https://raw.githubusercontent.com/APEX-922/CopyCart/main/icon.png');
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: contain;
-      opacity: 0.15;
-      pointer-events: none;
-      z-index: 0;
-      filter: drop-shadow(0 0 35px rgba(223, 186, 103, 0.25));
-      transition: opacity 0.3s ease, filter 0.3s ease;
-    }
-
-    .glitter-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 1;
-    }
-
-    .sparkle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: #F9E4B7;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #DFBA67, 0 0 12px #F9E4B7;
-      animation: sparkleFly 3s infinite ease-in-out;
-      opacity: 0;
-      will-change: transform, opacity;
-    }
-
-    @keyframes sparkleFly {
-      0% { transform: translateY(10px) scale(0.3); opacity: 0; }
-      50% { opacity: 0.8; }
-      100% { transform: translateY(-40px) scale(1.1); opacity: 0; }
-    }
-
-    .container {
-      max-width: 1100px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.5;
+      padding: 20px;
+      max-width: 768px;
       margin: 0 auto;
-      padding: 0 24px;
-      position: relative;
-      z-index: 2;
     }
 
     header {
-      padding: 40px 0 28px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 1px solid var(--card-border);
-      background: rgba(10, 13, 20, 0.85);
-      backdrop-filter: blur(12px);
-      gap: 24px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      position: relative;
-      width: 100%;
-      max-width: 650px;
-      cursor: pointer;
-    }
-
-    .svg-logo-banner {
-      width: 100%;
-      height: auto;
-      max-height: 95px;
-      overflow: visible;
-      filter: drop-shadow(0 0 25px rgba(223, 186, 103, 0.6)) brightness(1.15) !important;
-      forced-color-adjust: none !important;
-      color-scheme: only dark !important;
-      transition: transform 0.3s ease, filter 0.3s ease;
-    }
-
-    .svg-logo-banner text {
-      fill: #F3D99B !important;
-      color: #F3D99B !important;
-      forced-color-adjust: none !important;
-    }
-
-    .logo:hover .svg-logo-banner {
-      transform: scale(1.03);
-      filter: drop-shadow(0 0 35px rgba(223, 186, 103, 0.85)) brightness(1.25) !important;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .nav-link {
-      padding: 10px 22px;
-      border-radius: 20px;
-      background: rgba(18, 22, 31, 0.6);
-      border: 1px solid var(--card-border);
-      color: var(--text-gold);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: 'Montserrat', sans-serif;
-      transition: transform 0.2s ease, background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-      display: inline-block;
-      cursor: pointer;
-    }
-
-    .nav-link:hover, .nav-link.active {
-      background: var(--gold-gradient);
-      color: #080A0F;
-      border-color: var(--card-border-glow);
-      box-shadow: 0 0 25px rgba(223, 186, 103, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.4);
-    }
-
-    .main-content {
-      padding: 50px 0 60px;
-    }
-
-    .cart-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-lg);
-      padding: 40px;
-      max-width: 800px;
-      margin: 0 auto;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
-      transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cart-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle 250px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(223, 186, 103, 0.15), transparent 80%);
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .cart-card:hover {
-      border-color: var(--card-border-glow);
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 30px rgba(223, 186, 103, 0.35);
-    }
-
-    .cart-card > * {
-      position: relative;
-      z-index: 2;
-    }
-
-    .subtitle {
-      font-size: 15px;
-      color: var(--text-gold);
+      margin-bottom: 24px;
       text-align: center;
-      font-weight: 700;
-      font-family: 'Montserrat', sans-serif;
-      margin-bottom: 16px;
-      letter-spacing: 0.3px;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      margin-bottom: 8px;
+    }
+
+    .subheading {
+      color: var(--text-muted);
+      font-size: 0.95rem;
     }
 
     .instruction-banner {
-      font-size: 13px;
-      color: var(--text-gold);
-      background: rgba(223, 186, 103, 0.08);
-      border: 1px solid var(--card-border);
-      padding: 14px 18px;
-      border-radius: var(--radius-md);
-      margin-bottom: 24px;
-      line-height: 1.5;
-      text-align: center;
+      background-color: #e7f5ff;
+      border: 1px solid #a5d8ff;
+      color: #1864ab;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      display: none;
     }
 
     .item-list {
       display: flex;
       flex-direction: column;
       gap: 12px;
-      margin-bottom: 24px;
-      max-height: 600px;
-      overflow-y: auto;
-      padding-right: 6px;
-    }
-
-    .item-list::-webkit-scrollbar {
-      width: 6px;
-    }
-    .item-list::-webkit-scrollbar-track {
-      background: rgba(8, 10, 15, 0.6);
-      border-radius: 4px;
-    }
-    .item-list::-webkit-scrollbar-thumb {
-      background: var(--card-border);
-      border-radius: 4px;
-    }
-    .item-list::-webkit-scrollbar-thumb:hover {
-      background: var(--card-border-glow);
     }
 
     .item-card {
-      background: rgba(8, 10, 15, 0.75);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-md);
-      padding: 14px 18px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
-      gap: 14px;
-      transition: all 0.25s ease;
-      width: 100%;
-    }
-
-    .item-card:hover {
-      border-color: var(--card-border-glow);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 12px rgba(223, 186, 103, 0.2);
+      gap: 16px;
+      transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
     }
 
     .item-card.completed {
-      background: rgba(5, 7, 10, 0.85);
-      border-color: rgba(223, 186, 103, 0.12);
-      opacity: 0.55;
-    }
-
-    .item-card.completed .item-title-link {
-      color: var(--text-muted);
-      text-decoration: line-through;
-    }
-
-    .item-card.completed .item-thumb {
-      filter: grayscale(80%);
-      opacity: 0.6;
+      background-color: var(--completed-bg);
+      border-color: var(--completed-border);
+      opacity: 0.75;
     }
 
     .item-chk {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--ebay-blue-solid);
+      width: 20px;
+      height: 20px;
       cursor: pointer;
-      flex-shrink: 0;
-      display: none;
     }
 
-    .item-card.completed .item-chk {
-      display: inline-block;
-    }
-
-    /* Thumbnail Styling */
     .item-thumb-wrapper {
-      width: 60px;
-      height: 60px;
-      min-width: 60px;
+      width: 64px;
+      height: 64px;
+      min-width: 64px;
       border-radius: 6px;
       overflow: hidden;
-      background: rgba(18, 22, 31, 0.9);
-      border: 1px solid rgba(223, 186, 103, 0.2);
+      background-color: #f1f3f5;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
+      text-decoration: none;
+      border: 1px solid var(--border-color);
     }
 
     .item-thumb {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
-      transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
-    }
-
-    .item-card:hover .item-thumb {
-      transform: scale(1.05);
     }
 
     .item-thumb-placeholder {
-      font-size: 20px;
-      opacity: 0.3;
+      font-size: 1.5rem;
     }
 
     .item-details {
@@ -365,215 +118,86 @@
     }
 
     .item-title-link {
-      color: var(--text-gold);
-      text-decoration: none;
-      font-size: 14px;
       font-weight: 600;
-      line-height: 1.4;
+      color: var(--text-color);
+      text-decoration: none;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      transition: color 0.2s ease;
+      font-size: 0.95rem;
     }
 
     .item-title-link:hover {
-      color: #ffffff;
-      text-decoration: underline;
+      color: var(--primary-color);
+    }
+
+    .item-card.completed .item-title-link {
+      text-decoration: line-through;
+      color: var(--text-muted);
     }
 
     .item-id-tag {
-      font-size: 11px;
+      font-size: 0.8rem;
       color: var(--text-muted);
       margin-top: 4px;
     }
 
     .btn-item-cart {
-      padding: 10px 18px;
-      background: var(--ebay-blue-gradient);
+      background-color: var(--primary-color);
       color: #ffffff;
-      font-weight: 700;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 12px;
-      letter-spacing: 0.3px;
-      border: 1px solid #0046BE;
-      border-radius: 20px;
-      cursor: pointer;
+      padding: 8px 14px;
+      border-radius: 6px;
       text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
       white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(0, 100, 210, 0.3);
-      transition: all 0.2s ease;
-      display: inline-block;
-      text-align: center;
-      flex-shrink: 0;
+      transition: background-color 0.2s;
     }
 
     .btn-item-cart:hover {
-      border-color: #ffffff;
-      box-shadow: 0 0 15px rgba(0, 100, 210, 0.6);
-      transform: translateY(-1px);
+      background-color: var(--primary-hover);
     }
 
     .btn-item-cart.btn-completed {
-      background: rgba(0, 100, 210, 0.15) !important;
-      color: var(--text-gold) !important;
-      border-color: rgba(0, 100, 210, 0.3) !important;
-      box-shadow: none !important;
-      font-weight: 600 !important;
+      background-color: #6c757d;
     }
 
     .reset-container {
-      margin-top: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
+      margin-top: 24px;
+      display: none;
+      justify-content: flex-end;
     }
 
-    .btn-reset-all {
-      background: rgba(18, 22, 31, 0.6);
+    .btn-reset {
+      background: none;
+      border: none;
       color: var(--text-muted);
-      border: 1px dashed var(--card-border);
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
       cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .btn-reset-all:hover {
-      color: #ffffff;
-      border-color: var(--card-border-glow);
-      background: rgba(223, 186, 103, 0.15);
-      box-shadow: 0 0 15px rgba(223, 186, 103, 0.2);
-    }
-
-    .try-copycart-text {
-      font-size: 13px;
-      font-weight: 600;
-      font-family: 'Montserrat', sans-serif;
-      text-align: center;
-      color: var(--text-gold);
-      line-height: 1.5;
-    }
-
-    footer {
-      padding: 40px 0;
-      border-top: 1px solid var(--card-border);
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 14px;
-    }
-
-    footer a {
-      color: var(--text-gold);
       text-decoration: underline;
     }
 
-    .footer-compliance {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.7);
-      margin-top: 10px;
-      line-height: 1.4;
-    }
-
-    @media (max-width: 768px) {
-      header {
-        padding: 30px 0 20px;
-        gap: 18px;
-      }
-      .svg-logo-banner {
-        max-height: 70px;
-      }
-      .cart-card {
-        padding: 28px 20px;
-      }
-      .nav-link {
-        padding: 8px 16px;
-        font-size: 13px;
-      }
-      .item-thumb-wrapper {
-        width: 50px;
-        height: 50px;
-        min-width: 50px;
-      }
+    .btn-reset:hover {
+      color: var(--text-color);
     }
   </style>
 </head>
 <body>
 
-  <div class="parallax-bg" id="bgLogoCenter" aria-hidden="true"></div>
+  <header>
+    <h1>Shared List</h1>
+    <p class="subheading" id="item-count-text">Loading list...</p>
+  </header>
 
-  <div class="container">
-    <header>
-      <a href="https://apex-922.github.io/CopyCart/index" class="logo" id="headerLogo">
-        <div style="position:relative; width: 100%; display: flex; justify-content: center; align-items: center;">
-          <svg class="svg-logo-banner" viewBox="0 0 650 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-              <filter id="goldGlow" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="5" result="blur" />
-                <feComponentTransfer in="blur" result="glow1">
-                  <feFuncA type="linear" slope="0.8"/>
-                </feComponentTransfer>
-                <feMerge>
-                  <feMergeNode in="glow1" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
-            <text
-              x="50%"
-              y="55%"
-              dominant-baseline="middle"
-              text-anchor="middle"
-              fill="#F3D99B"
-              filter="url(#goldGlow)"
-              style='
-                font-family: "Montserrat", "Arial Black", sans-serif;
-                font-weight: 900;
-                font-size: 76px;
-                letter-spacing: -3px;
-                fill: #F3D99B !important;
-                forced-color-adjust: none !important;
-              '>
-              CopyCart
-            </text>
-          </svg>
-          <div class="glitter-container" id="logoGlitter" aria-hidden="true"></div>
-        </div>
-      </a>
-      <nav class="nav-links">
-        <a href="https://apex-922.github.io/CopyCart/index#features" class="nav-link">Features</a>
-        <a href="https://apex-922.github.io/CopyCart/index#how-it-works" class="nav-link">How It Works</a>
-        <a href="https://apex-922.github.io/CopyCart/Support" class="nav-link">Link Generator</a>
-        <a href="https://apex-922.github.io/CopyCart/PrivacyPolicy" class="nav-link">Privacy</a>
-      </nav>
-    </header>
+  <div class="instruction-banner" id="instruction-banner">
+    Click <strong>Add to Cart</strong> to open each listing on eBay. Checked items will stay marked as complete.
+  </div>
 
-    <main class="main-content">
-      <div class="cart-card magnetic-target">
-        <p class="subtitle" id="item-count-text">Loading shared collection...</p>
-        
-        <div class="instruction-banner" id="instruction-banner" style="display:none;">
-          Click <strong>Add to Cart</strong> next to each item to open it directly on eBay. Once added, return to this tab to complete the rest of your items.
-        </div>
+  <div class="item-list" id="item-list"></div>
 
-        <div class="item-list" id="item-list"></div>
-
-        <div class="reset-container" id="reset-container" style="display:none;">
-          <button class="btn-reset-all" id="reset-all-btn">↻ Reset Progress for All Items</button>
-          <div class="try-copycart-text">Want to share your own carts? Click the CopyCart logo at the top to explore the extension!</div>
-        </div>
-      </div>
-    </main>
-
-    <footer>
-      <p>Copyright &copy; 2026 APEX. All Rights Reserved.</p>
-      <p style="margin-top: 8px;"><a href="https://apex-922.github.io/CopyCart/PrivacyPolicy">Privacy Policy</a></p>
-      <p class="footer-compliance">CopyCart is an independent third-party tool and is not affiliated with, endorsed by, or sponsored by Amazon.com, Inc., eBay Inc., Google LLC, or Mozilla Corporation. As an Amazon Associate CopyCart earns from qualifying purchases. As an eBay Partner CopyCart may earn from qualifying purchases. Google Chrome is a trademark of Google LLC. Firefox is a trademark of Mozilla Foundation.</p>
-    </footer>
+  <div class="reset-container" id="reset-container">
+    <button class="btn-reset" id="reset-all-btn">Reset All Completed States</button>
   </div>
 
   <script>
@@ -593,25 +217,54 @@
       return `${baseUrl}?${params.toString()}`;
     }
 
-    // Fetches live item details (title and image) from eBay oEmbed
+    // Scrapes title and primary image via CORS proxy fallback
     async function fetchEbayDetails(itemId) {
+      const itemUrl = `https://www.ebay.com/itm/${itemId}`;
+      
+      // Attempt 1: Fetch live OpenGraph metadata via proxy
       try {
-        const itemUrl = encodeURIComponent(`https://www.ebay.com/itm/${itemId}`);
-        const response = await fetch(`https://www.ebay.com/services/oembed?url=${itemUrl}&format=json`);
-        if (!response.ok) return null;
-        const data = await response.json();
-        return {
-          title: data.title || null,
-          thumbnail: data.thumbnail_url || null
-        };
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(itemUrl)}`;
+        const res = await fetch(proxyUrl);
+        if (res.ok) {
+          const data = await res.json();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(data.contents, "text/html");
+
+          const ogTitle = doc.querySelector('meta[property="og:title"]')?.getAttribute("content");
+          const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute("content");
+
+          if (ogTitle || ogImage) {
+            return {
+              title: ogTitle ? ogTitle.replace(/\s*\|.*$/, '').trim() : null,
+              thumbnail: ogImage || null
+            };
+          }
+        }
       } catch (e) {
-        return null;
+        console.warn(`Proxy scrape failed for item ${itemId}, attempting fallback...`);
       }
+
+      // Attempt 2: Fallback to direct oEmbed API
+      try {
+        const response = await fetch(`https://www.ebay.com/services/oembed?url=${encodeURIComponent(itemUrl)}&format=json`);
+        if (response.ok) {
+          const data = await response.json();
+          return {
+            title: data.title || null,
+            thumbnail: data.thumbnail_url || null
+          };
+        }
+      } catch (e) {
+        console.error(`Failed to resolve metadata for item ${itemId}:`, e);
+      }
+
+      return null;
     }
 
+    // Parse items parameter: Handles both plain "ID" and "ID:EncodedTitle" formats
     const urlParams = new URLSearchParams(window.location.search);
     const rawItemsParam = urlParams.get("items") || "";
-    
+
     const parsedItems = rawItemsParam.split(",").map(entry => {
       const [id, ...titleParts] = entry.split(":");
       const cleanId = (id || "").trim();
@@ -669,7 +322,7 @@
         chk.className = "item-chk";
         chk.checked = isAlreadyCompleted;
 
-        // Image Container
+        // Image Wrapper
         const thumbWrapper = document.createElement("a");
         thumbWrapper.href = itemUrl;
         thumbWrapper.target = "_blank";
@@ -681,6 +334,7 @@
         placeholder.textContent = "🛍️";
         thumbWrapper.appendChild(placeholder);
 
+        // Details Container
         const details = document.createElement("div");
         details.className = "item-details";
 
@@ -699,6 +353,7 @@
         details.appendChild(titleLink);
         details.appendChild(idTag);
 
+        // CTA Button
         const btn = document.createElement("a");
         btn.href = itemUrl;
         btn.target = "_blank";
@@ -738,19 +393,17 @@
 
         itemListContainer.appendChild(card);
 
-        // Fetch image & missing title from eBay in background
+        // Asynchronous details fetch for ID-only links generated in support.html
         fetchEbayDetails(item.id).then(detailsRes => {
           if (!detailsRes) return;
 
-          // Update title if missing
           if (item.isPlaceholderTitle && detailsRes.title) {
             item.title = detailsRes.title;
             item.isPlaceholderTitle = false;
-            const el = document.getElementById(`item-title-${item.id}`);
-            if (el) el.textContent = detailsRes.title;
+            const titleEl = document.getElementById(`item-title-${item.id}`);
+            if (titleEl) titleEl.textContent = detailsRes.title;
           }
 
-          // Render Image
           if (detailsRes.thumbnail) {
             const img = document.createElement("img");
             img.src = detailsRes.thumbnail;
@@ -765,45 +418,7 @@
       });
     }
 
-    function createGlitter(containerId, count = 12) {
-      const container = document.getElementById(containerId);
-      if (!container) return;
-
-      for (let i = 0; i < count; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.className = 'sparkle';
-        sparkle.style.left = `${Math.random() * 100}%`;
-        sparkle.style.top = `${Math.random() * 100}%`;
-        sparkle.style.animationDelay = `${Math.random() * 3}s`;
-        sparkle.style.animationDuration = `${2 + Math.random() * 2}s`;
-        container.appendChild(sparkle);
-      }
-    }
-
-    const centerLogo = document.getElementById('bgLogoCenter');
-    if (centerLogo) {
-      document.addEventListener('mousemove', (e) => {
-        const centerRect = centerLogo.getBoundingClientRect();
-        const centerDist = Math.hypot(
-          e.clientX - (centerRect.left + centerRect.width / 2),
-          e.clientY - (centerRect.top + centerRect.height / 2)
-        );
-        const threshold = 380;
-
-        if (centerDist < threshold) {
-          const intensity = 1 - (centerDist / threshold);
-          centerLogo.style.opacity = (0.15 + (intensity * 0.6)).toString();
-          centerLogo.style.filter = `drop-shadow(0 0 ${35 + intensity * 40}px rgba(223, 186, 103, ${0.3 + intensity * 0.7})) brightness(${1 + intensity * 0.25})`;
-        } else {
-          centerLogo.style.opacity = '0.15';
-          centerLogo.style.filter = 'drop-shadow(0 0 35px rgba(223, 186, 103, 0.25)) brightness(1)';
-        }
-      });
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
-      createGlitter('logoGlitter', 14);
-
       if (parsedItems.length === 0) {
         itemCountText.textContent = "No valid items found in this share link.";
       } else {
@@ -818,27 +433,7 @@
           renderList();
         });
       }
-
-      document.querySelectorAll('.magnetic-target, .nav-link, .cart-card').forEach(btn => {
-        btn.addEventListener('mousemove', (e) => {
-          const rect = btn.getBoundingClientRect();
-          const x = e.clientX - rect.left - rect.width / 2;
-          const y = e.clientY - rect.top - rect.height / 2;
-
-          if (btn.classList.contains('nav-link')) {
-            btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-          }
-
-          btn.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-          btn.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-        });
-
-        btn.addEventListener('mouseleave', () => {
-          btn.style.transform = 'translate(0px, 0px)';
-        });
-      });
     });
   </script>
 </body>
 </html>
-
