@@ -322,11 +322,10 @@
       display: inline-block;
     }
 
-    /* Thumbnail styling */
     .item-thumb-wrapper {
-      width: 60px;
-      height: 60px;
-      min-width: 60px;
+      width: 64px;
+      height: 64px;
+      min-width: 64px;
       border-radius: 6px;
       overflow: hidden;
       background: rgba(18, 22, 31, 0.8);
@@ -336,6 +335,7 @@
       justify-content: center;
       text-decoration: none;
       flex-shrink: 0;
+      position: relative;
     }
 
     .item-thumb {
@@ -579,58 +579,32 @@
       return `${baseUrl}?${params.toString()}`;
     }
 
-    // Fetches live titles and primary thumbnails for ID-only links from support.html
-    async function fetchEbayDetails(itemId) {
-      const itemUrl = `https://www.ebay.com/itm/${itemId}`;
-      
-      try {
-        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(itemUrl)}`;
-        const res = await fetch(proxyUrl);
-        if (res.ok) {
-          const data = await res.json();
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(data.contents, "text/html");
-
-          const ogTitle = doc.querySelector('meta[property="og:title"]')?.getAttribute("content");
-          const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute("content");
-
-          if (ogTitle || ogImage) {
-            return {
-              title: ogTitle ? ogTitle.replace(/\s*\|.*$/, '').trim() : null,
-              thumbnail: ogImage || null
-            };
-          }
-        }
-      } catch (e) {
-        console.warn(`Proxy failed for item ${itemId}`);
-      }
-
-      try {
-        const response = await fetch(`https://www.ebay.com/services/oembed?url=${encodeURIComponent(itemUrl)}&format=json`);
-        if (response.ok) {
-          const data = await response.json();
-          return {
-            title: data.title || null,
-            thumbnail: data.thumbnail_url || null
-          };
-        }
-      } catch (e) {
-        console.error(`Failed resolving details for ${itemId}:`, e);
-      }
-
-      return null;
-    }
-
+    // Helper to extract items from URL query params
     const urlParams = new URLSearchParams(window.location.search);
     const rawItemsParam = urlParams.get("items") || "";
     
     const parsedItems = rawItemsParam.split(",").map(entry => {
-      const [id, ...titleParts] = entry.split(":");
-      const cleanId = (id || "").trim();
-      const rawTitle = titleParts.join(":");
+      const parts = entry.split(":");
+      const cleanId = (parts[0] || "").trim();
+      
+      // Reconstruct title if colon was part of original title text
+      const rawTitle = parts.slice(1).join(":");
       const hasTitle = Boolean(rawTitle);
-      const cleanTitle = hasTitle ? decodeURIComponent(rawTitle) : `eBay Item #${cleanId}`;
-      return { id: cleanId, title: cleanTitle, isPlaceholderTitle: !hasTitle };
+      
+      let cleanTitle = `eBay Item #${cleanId}`;
+      if (hasTitle) {
+        try {
+          cleanTitle = decodeURIComponent(rawTitle);
+        } catch (e) {
+          cleanTitle = rawTitle;
+        }
+      }
+
+      return { 
+        id: cleanId, 
+        title: cleanTitle, 
+        isPlaceholderTitle: !hasTitle 
+      };
     }).filter(item => item.id.length > 0);
 
     const itemCountText = document.getElementById("item-count-text");
@@ -688,10 +662,20 @@
         thumbWrapper.rel = "noopener noreferrer";
         thumbWrapper.className = "item-thumb-wrapper";
 
-        const placeholder = document.createElement("span");
-        placeholder.className = "item-thumb-placeholder";
-        placeholder.textContent = "🛍️";
-        thumbWrapper.appendChild(placeholder);
+        // Direct eBay Image URL Fallback
+        const img = document.createElement("img");
+        img.className = "item-thumb";
+        img.alt = item.title;
+        
+        // Dynamic eBay image resolution fallback based on Item ID
+        img.src = `https://i.ebayimg.com/thumbs/images/g/~${item.id}/s-l225.jpg`;
+        
+        img.onerror = () => {
+          // Fallback to placeholder emoji if image doesn't exist
+          thumbWrapper.innerHTML = '<span class="item-thumb-placeholder">🛍️</span>';
+        };
+
+        thumbWrapper.appendChild(img);
 
         const details = document.createElement("div");
         details.className = "item-details";
@@ -749,33 +733,10 @@
         card.appendChild(btn);
 
         itemListContainer.appendChild(card);
-
-        // Async detail lookup for links generated via support.html
-        fetchEbayDetails(item.id).then(detailsRes => {
-          if (!detailsRes) return;
-
-          if (item.isPlaceholderTitle && detailsRes.title) {
-            item.title = detailsRes.title;
-            item.isPlaceholderTitle = false;
-            const titleEl = document.getElementById(`item-title-${item.id}`);
-            if (titleEl) titleEl.textContent = detailsRes.title;
-          }
-
-          if (detailsRes.thumbnail) {
-            const img = document.createElement("img");
-            img.src = detailsRes.thumbnail;
-            img.alt = item.title;
-            img.className = "item-thumb";
-            img.onload = () => {
-              thumbWrapper.innerHTML = "";
-              thumbWrapper.appendChild(img);
-            };
-          }
-        });
       });
     }
 
-    function createGlitter(containerId, count = 12) {
+    function createGlitter(containerId, count = 14) {
       const container = document.getElementById(containerId);
       if (!container) return;
 
