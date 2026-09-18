@@ -547,20 +547,8 @@ gap: 12px;
 margin-top: 20px;
 }
 
-.action-divider-or {
-display: none;
-color: var(--theme-text-accent);
-font-size: 14px;
-font-weight: 800;
-font-family: 'Montserrat', sans-serif;
-text-transform: lowercase;
-letter-spacing: 0.5px;
-user-select: none;
-transition: color 0.4s ease;
-padding: 0 4px;
-}
-
-.btn-generate, .btn-share {
+.btn-generate {
+width: 100%;
 padding: 16px 28px;
 border-radius: 30px;
 background: rgba(18, 22, 31, 0.85);
@@ -581,23 +569,14 @@ position: relative;
 overflow: visible;
 }
 
-.btn-generate {
-flex: 1;
-}
-
-.btn-share {
-display: none;
-padding: 16px 20px;
-}
-
-.btn-generate:hover:not(:disabled), .btn-share:hover:not(:disabled) {
+.btn-generate:hover:not(:disabled) {
 background: var(--theme-btn-gradient);
 color: var(--theme-btn-color);
 border-color: var(--theme-border-glow);
 box-shadow: 0 0 35px var(--theme-border-glow), 0 8px 25px rgba(0,0,0,0.5), inset 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
-.btn-generate:disabled, .btn-share:disabled {
+.btn-generate:disabled {
 cursor: not-allowed;
 opacity: 0.65;
 }
@@ -693,20 +672,6 @@ font-size: 17px;
 padding: 8px 16px;
 font-size: 13px;
 }
-.action-buttons-wrapper {
-flex-direction: column;
-gap: 8px;
-}
-.action-divider-or {
-margin: 4px 0;
-}
-.btn-share {
-width: 100%;
-}
-.btn-generate {
-display: flex !important;
-width: 100%;
-}
 }
 </style>
 </head>
@@ -765,7 +730,7 @@ CopyCart
 <div class="generator-card magnetic-target" id="link-generator">
 <h2>
 <span class="pulsing-arrow" aria-hidden="true">↓</span>
-Combine and share your links.<br><small style="font-size: 14px; opacity: 0.85; font-weight: 600;">(Amazon or eBay)</small>
+Combine and copy your links.<br><small style="font-size: 14px; opacity: 0.85; font-weight: 600;">(Amazon or eBay)</small>
 <span class="pulsing-arrow" aria-hidden="true">↓</span>
 </h2>
 
@@ -785,13 +750,6 @@ Combine and share your links.<br><small style="font-size: 14px; opacity: 0.85; f
 <span class="pulsing-arrow-right" aria-hidden="true">→</span>
 <span id="generateBtnText">Combine and Copy</span>
 <span class="pulsing-arrow-left" aria-hidden="true">←</span>
-</button>
-
-<span class="action-divider-or" id="actionDividerOr">or</span>
-
-<button type="button" class="btn-share" id="shareBtn" onclick="shareGeneratedLink(event)" title="Share Link" aria-label="Share Link">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-<span id="shareBtnText">Combine and Share</span>
 </button>
 </div>
 </form>
@@ -1127,46 +1085,6 @@ restoreGenerateBtnState();
 }
 }
 
-async function shareGeneratedLink(event) {
-if (event) {
-event.preventDefault();
-event.stopPropagation();
-}
-
-let targetUrl = getGeneratedUrl();
-if (!targetUrl) return;
-
-const shareBtn = document.getElementById('shareBtn');
-if (shareBtn) {
-shareBtn.disabled = true;
-createFireworks(shareBtn);
-}
-
-// Reset form inputs immediately
-resetFormInputs();
-
-try {
-if (navigator.share) {
-await navigator.share({
-title: 'CopyCart Shared Links',
-url: targetUrl
-});
-} else {
-const copySuccess = await copyToClipboard(targetUrl);
-if (copySuccess) {
-alert('Sharing is not natively supported on this browser. Link has been copied to your clipboard!');
-}
-}
-} catch (err) {
-if (err.name !== 'AbortError') {
-console.error('Error sharing:', err);
-}
-} finally {
-// Auto refresh the page in the background to fully clear out states and prevent re-triggering on tab focus
-window.location.reload();
-}
-}
-
 function createFireworks(btn) {
 if (!btn) return;
 btn.querySelectorAll('.firework-ring, .firework-particle').forEach(el => el.remove());
@@ -1219,13 +1137,6 @@ document.addEventListener('DOMContentLoaded', () => {
 createGlitter('logoGlitter', 14);
 createGlitter('badgeGlitterChrome', 4);
 createGlitter('badgeGlitterFirefox', 4);
-
-if (navigator.share) {
-const shareBtn = document.getElementById('shareBtn');
-const actionDividerOr = document.getElementById('actionDividerOr');
-if (shareBtn) shareBtn.style.display = 'inline-flex';
-if (actionDividerOr) actionDividerOr.style.display = 'inline-block';
-}
 
 document.querySelectorAll('.magnetic-target, .nav-link, .btn-badge-styled, .badge-card, .generator-card, .affiliate-disclaimer-card, .custom-middle-card').forEach(btn => {
 btn.addEventListener('mousemove', (e) => {
