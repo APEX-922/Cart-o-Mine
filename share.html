@@ -322,34 +322,6 @@
       display: inline-block;
     }
 
-    .item-thumb-wrapper {
-      width: 64px;
-      height: 64px;
-      min-width: 64px;
-      border-radius: 6px;
-      overflow: hidden;
-      background: rgba(18, 22, 31, 0.8);
-      border: 1px solid var(--card-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      flex-shrink: 0;
-      position: relative;
-    }
-
-    .item-thumb {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .item-thumb-placeholder {
-      font-size: 1.4rem;
-      color: var(--text-gold);
-    }
-
     .item-details {
       flex: 1;
       min-width: 0;
@@ -655,28 +627,6 @@
         chk.className = "item-chk";
         chk.checked = isAlreadyCompleted;
 
-        // Image Thumb Wrapper
-        const thumbWrapper = document.createElement("a");
-        thumbWrapper.href = itemUrl;
-        thumbWrapper.target = "_blank";
-        thumbWrapper.rel = "noopener noreferrer";
-        thumbWrapper.className = "item-thumb-wrapper";
-
-        // Direct eBay Image URL Fallback
-        const img = document.createElement("img");
-        img.className = "item-thumb";
-        img.alt = item.title;
-        
-        // Dynamic eBay image resolution fallback based on Item ID
-        img.src = `https://i.ebayimg.com/thumbs/images/g/~${item.id}/s-l225.jpg`;
-        
-        img.onerror = () => {
-          // Fallback to placeholder emoji if image doesn't exist
-          thumbWrapper.innerHTML = '<span class="item-thumb-placeholder">🛍️</span>';
-        };
-
-        thumbWrapper.appendChild(img);
-
         const details = document.createElement("div");
         details.className = "item-details";
 
@@ -728,7 +678,6 @@
         });
 
         card.appendChild(chk);
-        card.appendChild(thumbWrapper);
         card.appendChild(details);
         card.appendChild(btn);
 
