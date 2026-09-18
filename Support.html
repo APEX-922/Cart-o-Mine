@@ -853,6 +853,7 @@ As an eBay Partner I may earn from qualifying purchases.
 const ASSOCIATE_TAG = 'apex087e-20';
 let copyTimeout = null;
 let lastGeneratedUrl = null;
+let isSharingInProgress = false;
 
 function createGlitter(containerId, count = 12) {
 const container = document.getElementById(containerId);
@@ -1109,17 +1110,15 @@ resetInputs();
 async function shareGeneratedLink(event) {
 if (event) event.preventDefault();
 
+if (isSharingInProgress) return;
+
 let targetUrl = lastGeneratedUrl || getGeneratedUrl();
 if (!targetUrl) return;
 
 const shareBtn = document.getElementById('shareBtn');
 if (shareBtn) createFireworks(shareBtn);
 
-await copyToClipboard(targetUrl);
-
-// Execute field reset immediately BEFORE opening Web Share API
-resetInputs();
-restoreGenerateBtnState();
+isSharingInProgress = true;
 
 if (navigator.share) {
 try {
@@ -1128,10 +1127,18 @@ title: 'CopyCart Shared Links',
 url: targetUrl
 });
 } catch (err) {
-// Shared sheet dismissed by user
+// Share sheet dismissed by user
+} finally {
+isSharingInProgress = false;
+resetInputs();
+restoreGenerateBtnState();
 }
 } else {
+await copyToClipboard(targetUrl);
 alert('Sharing is not natively supported on this browser. Link has been copied to your clipboard!');
+isSharingInProgress = false;
+resetInputs();
+restoreGenerateBtnState();
 }
 }
 
