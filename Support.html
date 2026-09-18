@@ -542,8 +542,22 @@ box-shadow: 0 0 12px var(--theme-focus-glow);
 
 .action-buttons-wrapper {
 display: flex;
+align-items: center;
 gap: 12px;
 margin-top: 20px;
+}
+
+.action-divider-or {
+display: none;
+color: var(--theme-text-accent);
+font-size: 14px;
+font-weight: 800;
+font-family: 'Montserrat', sans-serif;
+text-transform: lowercase;
+letter-spacing: 0.5px;
+user-select: none;
+transition: color 0.4s ease;
+padding: 0 4px;
 }
 
 .btn-generate, .btn-share {
@@ -681,6 +695,10 @@ font-size: 13px;
 }
 .action-buttons-wrapper {
 flex-direction: column;
+gap: 8px;
+}
+.action-divider-or {
+margin: 4px 0;
 }
 .btn-share {
 width: 100%;
@@ -765,13 +783,15 @@ Combine and share your links.<br><small style="font-size: 14px; opacity: 0.85; f
 <div class="action-buttons-wrapper">
 <button type="submit" class="btn-generate" id="generateBtn">
 <span class="pulsing-arrow-right" aria-hidden="true">→</span>
-<span id="generateBtnText">Generate & Copy Link</span>
+<span id="generateBtnText">Combine and Copy</span>
 <span class="pulsing-arrow-left" aria-hidden="true">←</span>
 </button>
 
+<span class="action-divider-or" id="actionDividerOr">or</span>
+
 <button type="button" class="btn-share" id="shareBtn" onclick="shareGeneratedLink(event)" title="Share Link" aria-label="Share Link">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-<span id="shareBtnText">Share Link</span>
+<span id="shareBtnText">Combine and Share</span>
 </button>
 </div>
 </form>
@@ -852,6 +872,7 @@ As an eBay Partner I may earn from qualifying purchases.
 <script>
 const ASSOCIATE_TAG = 'apex087e-20';
 let copyTimeout = null;
+let shareTimeout = null;
 let lastGeneratedUrl = null;
 let isSharingInProgress = false;
 
@@ -928,7 +949,12 @@ if (generateBtn) {
 generateBtn.disabled = false;
 generateBtn.classList.remove('copied-state');
 }
-if (generateBtnText) generateBtnText.textContent = 'Generate & Copy Link';
+if (generateBtnText) generateBtnText.textContent = 'Combine and Copy';
+}
+
+function restoreShareBtnState() {
+const shareBtnText = document.getElementById('shareBtnText');
+if (shareBtnText) shareBtnText.textContent = 'Combine and Share';
 }
 
 function extractASIN(urlStr) {
@@ -1014,7 +1040,7 @@ return null;
 // ROUTE A: EBAY GENERATION
 if (ebayItems.length > 0) {
 const payload = ebayItems.join(',');
-return `https://apex-922.github.io/CopyCart/share.html?items=${payload}`;
+return `https://apex-922.github.io/CopyCart/share.html?platform=ebay&items=${payload}`;
 }
 
 // ROUTE B: AMAZON GENERATION
@@ -1127,32 +1153,33 @@ if (shareBtn) createFireworks(shareBtn);
 
 isSharingInProgress = true;
 
-if (navigator.share) {
+if (shareTimeout) clearTimeout(shareTimeout);
+
 try {
+if (navigator.share) {
 await navigator.share({
 title: 'CopyCart Shared Links',
 url: targetUrl
 });
-} catch (err) {
-// Share sheet dismissed by user
-} finally {
-// Guarantees inputs reset AFTER OS share modal closes
-resetInputs();
-restoreGenerateBtnState();
-
-// 500ms guard window prevents phantom re-triggers on focus recovery
-setTimeout(() => {
-isSharingInProgress = false;
-}, 500);
-}
 } else {
 const copySuccess = await copyToClipboard(targetUrl);
 if (copySuccess) {
 alert('Sharing is not natively supported on this browser. Link has been copied to your clipboard!');
 }
+}
+} catch (err) {
+// Ignore AbortError when users cancel the native share sheet
+if (err.name !== 'AbortError') {
+console.error('Error sharing:', err);
+}
+} finally {
+// Align with the 2500ms timeout to allow Android focus transitions to settle
+shareTimeout = setTimeout(() => {
 resetInputs();
 restoreGenerateBtnState();
+restoreShareBtnState();
 isSharingInProgress = false;
+}, 2500);
 }
 }
 
@@ -1211,7 +1238,9 @@ createGlitter('badgeGlitterFirefox', 4);
 
 if (navigator.share) {
 const shareBtn = document.getElementById('shareBtn');
+const actionDividerOr = document.getElementById('actionDividerOr');
 if (shareBtn) shareBtn.style.display = 'inline-flex';
+if (actionDividerOr) actionDividerOr.style.display = 'inline-block';
 }
 
 document.querySelectorAll('.magnetic-target, .nav-link, .btn-badge-styled, .badge-card, .generator-card, .affiliate-disclaimer-card, .custom-middle-card').forEach(btn => {
