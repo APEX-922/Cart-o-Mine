@@ -409,33 +409,16 @@ position: relative;
 z-index: 2;
 }
 
-.generator-header-title {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-margin-bottom: 24px;
-text-align: center;
-}
-
 .generator-card h2 {
-font-size: 22px;
+font-size: 20px;
 font-weight: 800;
 color: var(--theme-text-accent);
+margin-bottom: 24px;
 display: flex;
 align-items: center;
 justify-content: center;
 gap: 12px;
-font-family: 'Montserrat', sans-serif;
-transition: color 0.4s ease;
-}
-
-.generator-subtitle {
-font-size: 14px;
-font-weight: 600;
-color: var(--theme-text-accent);
-opacity: 0.85;
-margin-top: 4px;
+text-align: center;
 font-family: 'Montserrat', sans-serif;
 transition: color 0.4s ease;
 }
@@ -689,7 +672,7 @@ max-height: 70px;
 padding: 28px 20px;
 }
 .generator-card h2 {
-font-size: 18px;
+font-size: 17px;
 }
 .nav-link {
 padding: 8px 16px;
@@ -759,16 +742,13 @@ CopyCart
 </header>
 
 <main class="main-content">
-<!-- Generator Card -->
+<!-- 1. Generate & Copy Link Card at the top -->
 <div class="generator-card magnetic-target" id="link-generator">
-<div class="generator-header-title">
 <h2>
 <span class="pulsing-arrow" aria-hidden="true">↓</span>
-Combine and share your links.
+Generate & Copy Shareable Link
 <span class="pulsing-arrow" aria-hidden="true">↓</span>
 </h2>
-<div class="generator-subtitle">(Amazon or eBay)</div>
-</div>
 
 <form id="tagForm" onsubmit="generateAndCopyLink(event)">
 <div id="urlInputsContainer">
@@ -796,13 +776,14 @@ Combine and share your links.
 </form>
 </div>
 
-<!-- Intro Banner -->
+<!-- 2. Text banner positioned in between -->
 <div class="intro-banner">
 This page is solely here to help support CopyCart. It is entirely optional and unnecessary because this is all handled within the extension itself. Feel free to copy any Amazon or eBay links you wish to make easily shareable multi-item suggestions for your friends, family, or colleagues.
 </div>
 
-<!-- Extension Store Badges -->
+<!-- 3. Google Chrome & Mozilla Firefox Badges at the bottom -->
 <div class="cta-group">
+<!-- Google Chrome Card -->
 <div class="badge-card magnetic-target">
 <span class="badge-label">Get This For Google Chrome</span>
 <a href="https://chromewebstore.google.com/detail/copycart/lhnmfphjaelpcpgfjjokadcfjljgmekb?authuser=1&hl=en" class="badge" id="badgeLogoChrome" style="text-decoration: none;" target="_blank" rel="noopener noreferrer">
@@ -814,6 +795,7 @@ This page is solely here to help support CopyCart. It is entirely optional and u
 </a>
 </div>
 
+<!-- Mozilla Firefox Card -->
 <div class="badge-card magnetic-target">
 <span class="badge-label">Get This For Mozilla Firefox</span>
 <a href="https://addons.mozilla.org/en-US/firefox/addon/copycart/" class="badge" id="badgeLogoFirefox" style="text-decoration: none;" target="_blank" rel="noopener noreferrer">
@@ -858,11 +840,11 @@ As an eBay Partner I may earn from qualifying purchases.
 </section>
 </main>
 
-<footer>
-  <p>Copyright &copy; 2026 APEX. All Rights Reserved.</p>
-  <p style="margin-top: 8px;"><a href="https://apex-922.github.io/CopyCart/PrivacyPolicy">Privacy Policy</a></p>
-  <p class="footer-compliance">CopyCart is an independent third-party tool and is not affiliated with, endorsed by, or sponsored by Amazon.com, Inc., eBay Inc., Google LLC, or Mozilla Corporation. As an Amazon Associate CopyCart earns from qualifying purchases. As an eBay Partner CopyCart may earn from qualifying purchases. Google Chrome is a trademark of Google LLC. Firefox is a trademark of Mozilla Foundation.</p>
-</footer>
+    <footer>
+      <p>Copyright &copy; 2026 APEX. All Rights Reserved.</p>
+      <p style="margin-top: 8px;"><a href="https://apex-922.github.io/CopyCart/PrivacyPolicy">Privacy Policy</a></p>
+      <p class="footer-compliance">CopyCart is an independent third-party tool and is not affiliated with, endorsed by, or sponsored by Amazon.com, Inc., eBay Inc., Google LLC, or Mozilla Corporation. As an Amazon Associate CopyCart earns from qualifying purchases. As an eBay Partner CopyCart may earn from qualifying purchases. Google Chrome is a trademark of Google LLC. Firefox is a trademark of Mozilla Foundation.</p>
+    </footer>
 
 </div>
 
@@ -888,6 +870,7 @@ container.appendChild(sparkle);
 }
 }
 
+// Live Dynamic Platform Detection & Card Theme Toggling
 function handleUrlInputChange() {
 const inputs = document.querySelectorAll('.cartUrl');
 const card = document.getElementById('link-generator');
@@ -949,21 +932,10 @@ const match = urlStr.match(asinRegex);
 return match ? match[1] : null;
 }
 
-function extractEbayInfo(urlStr) {
-const ebayRegex = /\/itm\/(?:([^\/]+)\/)?(\d{10,14})/;
+function extractEbayItemId(urlStr) {
+const ebayRegex = /\/itm\/(?:[^\/]+\/)?(\d{10,14})/;
 const match = urlStr.match(ebayRegex);
-if (!match) return null;
-
-const rawSlug = match[1] || '';
-const itemId = match[2];
-
-// Format title slug into human readable text if title slug is present
-let title = '';
-if (rawSlug) {
-title = decodeURIComponent(rawSlug).replace(/-/g, ' ').trim();
-}
-
-return { itemId, title };
+return match ? match[1] : null;
 }
 
 function getGeneratedUrl() {
@@ -993,12 +965,12 @@ return null;
 amazonAsins.push(asin);
 amazonDomain = url.hostname;
 } else if (host.includes('ebay.')) {
-const info = extractEbayInfo(val);
-if (!info || !info.itemId) {
+const itemId = extractEbayItemId(val);
+if (!itemId) {
 alert('Could not find a valid numeric Item ID in one of your eBay URLs.');
 return null;
 }
-ebayItems.push(`${info.itemId}:${encodeURIComponent(info.title)}`);
+ebayItems.push(`${itemId}:`);
 } else {
 alert('Please enter valid Amazon or eBay URLs only.');
 return null;
@@ -1009,6 +981,7 @@ return null;
 }
 }
 
+// Strict check: Prevent mixing platforms
 if (amazonAsins.length > 0 && ebayItems.length > 0) {
 alert('Mixing Amazon and eBay links in the same share link is not supported. Please generate separate cart links for each store.');
 return null;
@@ -1042,7 +1015,7 @@ try {
 await navigator.clipboard.writeText(text);
 return true;
 } catch (err) {
-// Fallback
+// Fallback execution if Clipboard API fails
 }
 }
 
