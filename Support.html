@@ -730,14 +730,14 @@ CopyCart
 <div class="generator-card magnetic-target" id="link-generator">
 <h2>
 <span class="pulsing-arrow" aria-hidden="true">↓</span>
-Combine and copy your links.<br><small style="font-size: 14px; opacity: 0.85; font-weight: 600;">(Amazon or eBay)</small>
+Combine and copy your links.
 <span class="pulsing-arrow" aria-hidden="true">↓</span>
 </h2>
 
 <form id="tagForm" onsubmit="generateAndCopyLink(event)">
 <div id="urlInputsContainer">
 <div class="form-group input-row">
-<input type="url" class="form-control cartUrl" placeholder="https://www.amazon.com/dp/B08N5WRWNW or https://www.ebay.com/itm/123456789012" aria-label="Product URL" oninput="handleUrlInputChange()" required>
+<input type="url" class="form-control cartUrl dynamic-placeholder" placeholder="https://www.amazon.com/dp/B085L9BB5N" aria-label="Product URL" oninput="handleUrlInputChange()" required>
 </div>
 </div>
 
@@ -831,6 +831,27 @@ As an eBay Partner I may earn from qualifying purchases.
 const ASSOCIATE_TAG = 'apex087e-20';
 let copyTimeout = null;
 
+// Dynamic placeholder cycling array
+const placeholderExamples = [
+  "https://www.amazon.com/dp/B085L9BB5N",
+  "https://www.ebay.com/itm/364004351661",
+  "Add your Amazon or eBay links here..."
+];
+let placeholderIndex = 0;
+
+function startPlaceholderTicker() {
+  setInterval(() => {
+    placeholderIndex = (placeholderIndex + 1) % placeholderExamples.length;
+    const activeInputs = document.querySelectorAll('.dynamic-placeholder');
+    activeInputs.forEach(input => {
+      // Only change placeholder if input is empty so it doesn't disrupt typing
+      if (!input.value) {
+        input.placeholder = placeholderExamples[placeholderIndex];
+      }
+    });
+  }, 2000);
+}
+
 function createGlitter(containerId, count = 12) {
 const container = document.getElementById(containerId);
 if (!container) return;
@@ -873,7 +894,8 @@ const container = document.getElementById('urlInputsContainer');
 const newRow = document.createElement('div');
 newRow.className = 'form-group input-row';
 
-newRow.innerHTML = `<input type="url" class="form-control cartUrl" placeholder="https://www.amazon.com/dp/B08N5WRWNW or https://www.ebay.com/itm/123456789012" aria-label="Product URL" oninput="handleUrlInputChange()" required> <button type="button" class="btn-remove-link" onclick="removeUrlInput(this)" title="Remove link" aria-label="Remove link">&times;</button>`;
+const currentPlaceholder = placeholderExamples[placeholderIndex];
+newRow.innerHTML = `<input type="url" class="form-control cartUrl dynamic-placeholder" placeholder="${currentPlaceholder}" aria-label="Product URL" oninput="handleUrlInputChange()" required> <button type="button" class="btn-remove-link" onclick="removeUrlInput(this)" title="Remove link" aria-label="Remove link">&times;</button>`;
 
 container.appendChild(newRow);
 const newInstInput = newRow.querySelector('input');
@@ -897,7 +919,8 @@ if (!container) return;
 const inputs = container.querySelectorAll('.cartUrl');
 inputs.forEach(input => { input.value = ''; });
 
-container.innerHTML = `<div class="form-group input-row"><input type="url" class="form-control cartUrl" placeholder="https://www.amazon.com/dp/B08N5WRWNW or https://www.ebay.com/itm/123456789012" aria-label="Product URL" oninput="handleUrlInputChange()" required></div>`;
+const currentPlaceholder = placeholderExamples[placeholderIndex];
+container.innerHTML = `<div class="form-group input-row"><input type="url" class="form-control cartUrl dynamic-placeholder" placeholder="${currentPlaceholder}" aria-label="Product URL" oninput="handleUrlInputChange()" required></div>`;
 
 handleUrlInputChange();
 }
@@ -1137,6 +1160,9 @@ document.addEventListener('DOMContentLoaded', () => {
 createGlitter('logoGlitter', 14);
 createGlitter('badgeGlitterChrome', 4);
 createGlitter('badgeGlitterFirefox', 4);
+
+// Start the 2-second placeholder rotator
+startPlaceholderTicker();
 
 document.querySelectorAll('.magnetic-target, .nav-link, .btn-badge-styled, .badge-card, .generator-card, .affiliate-disclaimer-card, .custom-middle-card').forEach(btn => {
 btn.addEventListener('mousemove', (e) => {
