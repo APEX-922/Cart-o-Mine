@@ -205,7 +205,7 @@
       border-radius: var(--radius-lg);
       padding: 40px;
       max-width: 800px;
-      margin: 0 auto;
+      margin: 0 auto 40px auto;
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
       transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
       position: relative;
@@ -232,6 +232,101 @@
     .cart-card > * {
       position: relative;
       z-index: 2;
+    }
+
+    /* CTA Badge Group Styles */
+    .cta-group {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 20px;
+      flex-wrap: wrap;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .badge-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 24px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .badge-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(223, 186, 103, 0.15), transparent 80%);
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .badge-card:hover {
+      border-color: var(--card-border-glow);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 30px rgba(223, 186, 103, 0.35);
+    }
+
+    .badge-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      color: #F3D99B !important;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: center;
+      forced-color-adjust: none !important;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 10px 24px;
+      border-radius: 30px;
+      background: rgba(18, 22, 31, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--card-border);
+      color: #F3D99B !important;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 20px rgba(223, 186, 103, 0.15);
+      position: relative;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+      width: 100%;
+      forced-color-adjust: none !important;
+      text-decoration: none;
+    }
+
+    .badge span {
+      color: #F3D99B !important;
+      forced-color-adjust: none !important;
+    }
+
+    .badge:hover {
+      border-color: var(--card-border-glow);
+      box-shadow: 0 0 25px rgba(223, 186, 103, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.4);
+    }
+
+    .badge-icon {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
     }
 
     .subtitle {
@@ -525,6 +620,31 @@
           <div class="try-copycart-text">Want to share your own carts? Click the CopyCart logo at the top to explore the extension!</div>
         </div>
       </div>
+
+      <!-- Add to Chrome & Firefox Badges Added Below Main Card -->
+      <div class="cta-group">
+        <div class="badge-card magnetic-target">
+            <span class="badge-label">Get This For Google Chrome</span>
+            <a href="https://chromewebstore.google.com/detail/copycart/lhnmfphjaelpcpgfjjokadcfjljgmekb?authuser=1&hl=en" class="badge" id="badgeLogoChrome" target="_blank" rel="noopener noreferrer">
+                <div style="position:relative; display:inline-block;">
+                    <img src="https://raw.githubusercontent.com/APEX-922/CopyCart/main/icon.png" alt="CopyCart Icon" class="badge-icon">
+                    <div class="glitter-container" id="badgeGlitterChrome" aria-hidden="true"></div>
+                </div>
+                <span>CopyCart v1.7.6</span>
+            </a>
+        </div>
+
+        <div class="badge-card magnetic-target">
+            <span class="badge-label">Get This For Mozilla Firefox</span>
+            <a href="https://addons.mozilla.org/en-US/firefox/addon/copycart/" class="badge" id="badgeLogoFirefox" target="_blank" rel="noopener noreferrer">
+                <div style="position:relative; display:inline-block;">
+                    <img src="https://raw.githubusercontent.com/APEX-922/CopyCart/main/icon.png" alt="CopyCart Icon" class="badge-icon">
+                    <div class="glitter-container" id="badgeGlitterFirefox" aria-hidden="true"></div>
+                </div>
+                <span>CopyCart v1.7.5</span>
+            </a>
+        </div>
+      </div>
     </main>
 
     <footer>
@@ -723,6 +843,8 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       createGlitter('logoGlitter', 14);
+      createGlitter('badgeGlitterChrome', 4);
+      createGlitter('badgeGlitterFirefox', 4);
 
       if (parsedItems.length === 0) {
         itemCountText.textContent = "No valid items found in this share link.";
@@ -739,7 +861,7 @@
         });
       }
 
-      document.querySelectorAll('.magnetic-target, .nav-link, .cart-card').forEach(btn => {
+      document.querySelectorAll('.magnetic-target, .nav-link, .cart-card, .badge-card').forEach(btn => {
         btn.addEventListener('mousemove', (e) => {
           const rect = btn.getBoundingClientRect();
           const x = e.clientX - rect.left - rect.width / 2;
