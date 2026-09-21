@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://apex-922.github.io/Cart-o-Mine/index.html</loc>
+    <loc>https://apex-922.github.io/CopyMyCart/index.html</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://apex-922.github.io/Cart-o-Mine/Support</loc>
+    <loc>https://apex-922.github.io/CopyMyCart/Support</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://apex-922.github.io/Cart-o-Mine/PrivacyPolicy.html</loc>
+    <loc>https://apex-922.github.io/CopyMyCart/PrivacyPolicy.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://apex-922.github.io/Cart-o-Mine/share</loc>
+    <loc>https://apex-922.github.io/CopyMyCart/share</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
