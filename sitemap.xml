@@ -8,7 +8,7 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://apex-922.github.io/CopyMyCart/Support</loc>
+    <loc>https://apex-922.github.io/CopyMyCart/Support.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -18,7 +18,7 @@
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://apex-922.github.io/CopyMyCart/share</loc>
+    <loc>https://apex-922.github.io/CopyMyCart/share.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
